@@ -2,13 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
-using static UnityEditor.PlayerSettings;
 
 public class PaintManager : MonoBehaviour
 {
@@ -44,6 +41,8 @@ public class PaintManager : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+
+        sprite = SpriteHolder.sprite;
     }
 
     private void Start()

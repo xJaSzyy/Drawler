@@ -19,7 +19,7 @@ public class LevelButton : MonoBehaviour
         buttonAnimation.Animate(() =>
         {
             SpriteHolder.sprite = transform.GetChild(0).GetComponent<Image>().sprite;
-            SceneManager.LoadScene(1);
+            SceneFader.Instance.FadeOutAndLoadScene(1);
         });
     }
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HomeButton : MonoBehaviour
@@ -18,7 +17,7 @@ public class HomeButton : MonoBehaviour
     {
         buttonAnimation.Animate(() =>
         {
-            SceneManager.LoadScene(0);
+            SceneFader.Instance.FadeOutAndLoadScene(0);
         });
     }
 }

@@ -33,9 +33,9 @@ public class CustomColorList
         return colors.Any(tile => tile.color.Equals(color));
     }
 
-    public int GetCount()
+    public int Count
     {
-        return colors.Count;
+        get { return colors.Count; }
     }
 }
 

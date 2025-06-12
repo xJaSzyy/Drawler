@@ -10,27 +10,27 @@ using UnityEngine.UI;
 public class PaintManager : MonoBehaviour
 {
     [Header("Tilemap")]
-    public Tilemap baseTilemap;
-    public Tilemap numberTilemap;
-    public Tilemap backTilemap;
+    [SerializeField] private Tilemap baseTilemap;
+    [SerializeField] private Tilemap numberTilemap;
+    [SerializeField] private Tilemap backTilemap;
 
     [Header("Tiles")]
-    public TileBase baseTile;
-    public TileBase backTile;
-    public List<TileBase> numberTiles;
-    public Sprite completeSprite;
+    [SerializeField] private TileBase baseTile;
+    [SerializeField] private TileBase backTile;
+    [SerializeField] private List<TileBase> numberTiles;
+    [SerializeField] private Sprite completeSprite;
 
     [Header("References")]
-    public GameObject colorButtonsHolder;
-    public GameObject colorButtonPrefab;
-    public HistoryManager historyManager;
-    public CameraController cameraController;
+    [SerializeField] private GameObject colorButtonsHolder;
+    [SerializeField] private GameObject colorButtonPrefab;
+    [SerializeField] private HistoryManager historyManager;
+    [SerializeField] private CameraController cameraController;
 
     [Header("Other")]
-    public Sprite sprite;
-    public Color32 selectedColor;
-    public bool finished = false;
+    [SerializeField] private Sprite sprite;
 
+    private bool finished = false;
+    private Color32 selectedColor;
     private Camera mainCamera;
     private CustomColorList colorList = new CustomColorList();
     private Slider selectedSlider;
@@ -178,8 +178,6 @@ public class PaintManager : MonoBehaviour
 
                 numberTilemap.SetTile(pos, numberTiles[index]);
                 numberTilemap.SetColor(pos, IsColorDark(color) ? darkColor : lightColor);
-
-                //colorList.GetTile(index).AddCount();
             }
         }
 
@@ -191,9 +189,9 @@ public class PaintManager : MonoBehaviour
     private void SpawnButtons()
     {
         RectTransform rectTransform = colorButtonsHolder.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(colorList.GetCount()*160, rectTransform.sizeDelta.y); 
+        rectTransform.sizeDelta = new Vector2(colorList.Count * 160, rectTransform.sizeDelta.y); 
 
-        for (int i = 0; i < colorList.GetCount(); i++)
+        for (int i = 0; i < colorList.Count; i++)
         {
             GameObject button = Instantiate(colorButtonPrefab, colorButtonsHolder.transform);
             Image colorComponent = button.transform.GetChild(0).GetComponent<Image>();

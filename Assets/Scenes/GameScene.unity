@@ -1223,7 +1223,7 @@ MonoBehaviour:
   colorButtonPrefab: {fileID: 1414911870041598485, guid: 4a8ac3db44b8fc44da9aaf8ce1686280, type: 3}
   historyManager: {fileID: 1706656651}
   cameraController: {fileID: 519420033}
-  sprite: {fileID: 21300000, guid: 6ca8aeaaf99bd44489acb55111bf188c, type: 3}
+  sprite: {fileID: 21300000, guid: c8fff52029eed2044b25d4cc2c9ec747, type: 3}
   selectedColor:
     serializedVersion: 2
     rgba: 0

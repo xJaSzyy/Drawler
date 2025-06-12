@@ -42,7 +42,10 @@ public class PaintManager : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        sprite = SpriteHolder.sprite;
+        if (SpriteHolder.sprite != null)
+        {
+            sprite = SpriteHolder.sprite;
+        }
     }
 
     private void Start()

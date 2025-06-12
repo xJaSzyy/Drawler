@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 2837796477757359993}
   - component: {fileID: 8972457556734578587}
   - component: {fileID: 3933740194065002819}
+  - component: {fileID: 6733851677920244548}
   m_Layer: 5
   m_Name: Color Button
   m_TagString: Untagged
@@ -317,6 +318,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6733851677920244548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414911870041598485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1d0b018f3e75ac4da2becd7c8c6ba33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2199839138421091990
 GameObject:
   m_ObjectHideFlags: 0

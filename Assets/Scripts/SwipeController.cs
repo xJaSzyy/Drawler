@@ -4,23 +4,24 @@ using UnityEngine.UI;
 
 public class SwipeController : MonoBehaviour, IEndDragHandler
 {
-    public int maxPage;
+    [Header("Settings")]
+    [SerializeField] private int maxPage;
+    [SerializeField] private Vector3 pageStep;
+    [SerializeField] private float tweenTime;
+    [SerializeField] private LeanTweenType tweenType;
+    [SerializeField] private Sprite barDefault;
+    [SerializeField] private Sprite barActive;
 
-    int currentPage;
-    Vector3 targetPos;
-    public Vector3 pageStep;
-    public RectTransform levelPagesRect;
-    public float tweenTime;
-    public LeanTweenType tweenType;
-    float dragThreshould;
-    LTDescr tween;
+    [Header("References")]
+    [SerializeField] private RectTransform levelPagesRect;
+    [SerializeField] private Image[] barImages;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button previousButton;
 
-    public Image[] barImages;
-    public Sprite barActive;
-    public Sprite barDefault;
-
-    public Button nextButton;
-    public Button previousButton;
+    private int currentPage;
+    private Vector3 targetPos;
+    private float dragThreshould;
+    private LTDescr tween;
 
     private void Awake()
     {

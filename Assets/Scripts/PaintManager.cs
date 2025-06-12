@@ -66,7 +66,7 @@ public class PaintManager : MonoBehaviour
             if (numberTilemap.GetTile(pos) != null)
             {
                 int index = colorList.GetTile(selectedColor).id;
-                if (numberTilemap.GetTile(pos).name.Contains(index.ToString()))
+                if (numberTilemap.GetTile(pos).name == $"numbers_{index}")
                 {
                     baseTilemap.SetTile(pos, baseTile);
                     baseTilemap.SetColor(pos, selectedColor);

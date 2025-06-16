@@ -384,7 +384,5 @@ public class PaintManager : MonoBehaviour
         byte[] bytes = texture.EncodeToPNG();
         string path = Path.Combine(Application.dataPath+"/Images", $"{sprite.name}_gray.png");
         File.WriteAllBytes(path, bytes);
-
-        Debug.Log("Картинка из Tilemap сохранена в: " + path);
     }
 }

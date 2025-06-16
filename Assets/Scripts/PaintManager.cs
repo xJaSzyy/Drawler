@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,6 +14,7 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private Tilemap baseTilemap;
     [SerializeField] private Tilemap numberTilemap;
     [SerializeField] private Tilemap backTilemap;
+    [SerializeField] private Tilemap testTilemap;
 
     [Header("Tiles")]
     [SerializeField] private TileBase baseTile;
@@ -42,15 +44,15 @@ public class PaintManager : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        if (SpriteHolder.sprite != null)
+        if (DataHolder.sprite != null)
         {
-            sprite = SpriteHolder.sprite;
+            sprite = DataHolder.sprite;
         }
     }
 
     private void Start()
     {
-        FillNumberColorsArray();
+        MatchingGrayTones();
         GenerateImage();
         CenterCameraOnImage();
         SpawnButtons();
@@ -60,6 +62,11 @@ public class PaintManager : MonoBehaviour
     private void Update()
     {
         if (finished) { return; } 
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            DownloadPNG();
+        }
 
         if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
         {
@@ -98,13 +105,14 @@ public class PaintManager : MonoBehaviour
         if (IsTilemapEmpty(numberTilemap))
         {
             finished = true;
+            DataHolder.colored[DataHolder.index] = 1;
             baseTilemap.ClearAllTiles();
 
             StartTimelapse();
         }
     }
 
-    private void FillNumberColorsArray()
+    private void MatchingGrayTones()
     {
         int val = 255;
         int length = GetColorsCount();
@@ -170,14 +178,14 @@ public class PaintManager : MonoBehaviour
                 }
                 int index = colorList.GetTile(newColor).id;
 
-                Color32 color = colorList.GetTile(index).grayColor;
+                Color32 grayColor = colorList.GetTile(index).grayColor;
                 Vector3Int pos = new(x, y, 0);
 
-                backTilemap.SetTile(pos, baseTile);
-                backTilemap.SetColor(pos, color);
+                backTilemap.SetTile(pos, baseTile); 
+                backTilemap.SetColor(pos, grayColor);
 
                 numberTilemap.SetTile(pos, numberTiles[index]);
-                numberTilemap.SetColor(pos, IsColorDark(color) ? darkColor : lightColor);
+                numberTilemap.SetColor(pos, IsColorDark(grayColor) ? darkColor : lightColor);
             }
         }
 
@@ -304,15 +312,15 @@ public class PaintManager : MonoBehaviour
 
     IEnumerator TimelapseCoroutine()
     {
-        float totalTime = historyManager.Count() / 110f;
+        float totalTime = historyManager.Count / 110f;
         float startTime = Time.time;
 
-        while (historyManager.Count() > 0)
+        while (historyManager.Count > 0)
         {
             float elapsedTime = Time.time - startTime;
             float remainingTime = totalTime - elapsedTime;
 
-            float interval = remainingTime / Mathf.Max(1, historyManager.Count());
+            float interval = remainingTime / Mathf.Max(1, historyManager.Count);
             yield return new WaitForSeconds(interval);
 
             var kvp = historyManager.Pop();
@@ -343,5 +351,40 @@ public class PaintManager : MonoBehaviour
         tilemap.CompressBounds();
         TileBase[] tiles = tilemap.GetTilesBlock(tilemap.cellBounds);
         return tiles.All(t => t == null);
+    }
+
+    private void DownloadPNG()
+    {
+        BoundsInt bounds = testTilemap.cellBounds;
+        int width = bounds.size.x;
+        int height = bounds.size.y;
+
+        Texture2D texture = new(width, height, TextureFormat.RGBA32, false);
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Vector3Int tilePos = new Vector3Int(bounds.x + x, bounds.y + y, 0);
+                TileBase tile = testTilemap.GetTile(tilePos);
+
+                if (tile == null || tile == backTile)
+                {
+                    texture.SetPixel(x, y, new Color(0, 0, 0, 0));
+                    continue;
+                }
+
+                Color color = testTilemap.GetColor(tilePos);
+                texture.SetPixel(x, y, color);
+            }
+        }
+
+        texture.Apply();
+
+        byte[] bytes = texture.EncodeToPNG();
+        string path = Path.Combine(Application.dataPath+"/Images", $"{sprite.name}_gray.png");
+        File.WriteAllBytes(path, bytes);
+
+        Debug.Log("Картинка из Tilemap сохранена в: " + path);
     }
 }

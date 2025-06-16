@@ -20,8 +20,8 @@ public class HistoryManager : MonoBehaviour
         return history.Dequeue();
     }
 
-    public int Count()
+    public int Count 
     {
-        return history.Count;
+        get { return history.Count; }
     }
 }

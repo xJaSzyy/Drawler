@@ -286,6 +286,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 682f67504efe72448b742354021cc256, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 56c58bf0be89980478b8788b95e9028b, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 682f67504efe72448b742354021cc256, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (1)
@@ -435,6 +443,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3516871703267417661, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 06ae3c5c144dc694699975f7fdeea7d8, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 589a8830c364c1949bbd9efc287710e6, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
       value: 
       objectReference: {fileID: 21300000, guid: 06ae3c5c144dc694699975f7fdeea7d8, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
@@ -608,7 +624,7 @@ GameObject:
   - component: {fileID: 413318437}
   - component: {fileID: 413318435}
   m_Layer: 5
-  m_Name: Page (1)
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -851,6 +867,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3516871703267417661, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f5003f98dd543a841b950c6250866353, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1439c6ca9f65e0d49b3360b8a3e0df19, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f5003f98dd543a841b950c6250866353, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (3)
@@ -959,6 +987,14 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: d1af37cd29c478a4cbd8a01922937e99, type: 3}
     - target: {fileID: 3516871703267417661, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0986d9d846b4ce849b3dccd52a05e1a6, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 95bd4b670e09caf439691676650c1df9, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
       value: 
       objectReference: {fileID: 21300000, guid: 0986d9d846b4ce849b3dccd52a05e1a6, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
@@ -1240,6 +1276,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 1ddd695cd2f628a4fae12f947665f824, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a7e5c74fb2eeba4e86f1adb53a92b1c, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1ddd695cd2f628a4fae12f947665f824, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (1)
@@ -1449,6 +1493,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d80ff90caf3742b4dbaeb7964f5353b6, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 12658e3ca77758e46b0a54883d694cab, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d80ff90caf3742b4dbaeb7964f5353b6, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button
@@ -1620,6 +1672,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c8fff52029eed2044b25d4cc2c9ec747, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 807dcb00ff8706243903839e5c7a4228, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c8fff52029eed2044b25d4cc2c9ec747, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (1)
@@ -1721,7 +1781,7 @@ GameObject:
   - component: {fileID: 985903064}
   - component: {fileID: 985903062}
   m_Layer: 5
-  m_Name: Page (2)
+  m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1960,6 +2020,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 622460953675ae343aab358c7082668a, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1050c0eee59e8c547a881d01bdc8837a, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 622460953675ae343aab358c7082668a, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (5)
@@ -1986,7 +2054,7 @@ GameObject:
   - component: {fileID: 1088198413}
   - component: {fileID: 1088198414}
   m_Layer: 5
-  m_Name: Page
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2139,6 +2207,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3516871703267417661, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8beb677814293144b9930fb6fa537125, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d24890427192b0c428785ad3ecee6476, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
       value: 
       objectReference: {fileID: 21300000, guid: 8beb677814293144b9930fb6fa537125, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
@@ -13798,6 +13874,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d250a4a7a4d0af842afd6436a8d96046, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f7ca9c9b89207164ba5e13a2dd023898, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d250a4a7a4d0af842afd6436a8d96046, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (2)
@@ -13906,6 +13990,14 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: d1af37cd29c478a4cbd8a01922937e99, type: 3}
     - target: {fileID: 3516871703267417661, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 90698067ed648a34fa0d7786e3082232, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 99fda4439547cae46adeb186f2b9f334, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
       value: 
       objectReference: {fileID: 21300000, guid: 90698067ed648a34fa0d7786e3082232, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
@@ -14127,6 +14219,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3516871703267417661, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e3fc0c339fa474142b380caa5854292e, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 186f4c380a4229643974233bf1f9e68a, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e3fc0c339fa474142b380caa5854292e, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (5)
@@ -14308,6 +14412,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 4dcb99d1da812834da4af51dd7a58b26, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 37aaea3f1cfa3f742883366b0b115bc5, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4dcb99d1da812834da4af51dd7a58b26, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (5)
@@ -14414,6 +14526,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c59303cf28a8ca4439253ffe15481501, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 656032addcd5b6e41a58e9a0a7d6c234, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c59303cf28a8ca4439253ffe15481501, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (4)
@@ -14516,6 +14636,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3516871703267417661, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f7ec540bbd381424ab6cd75ae7847ab1, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0855c08e6f4f15f4bae87fe7454bb372, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f7ec540bbd381424ab6cd75ae7847ab1, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (4)
@@ -14771,6 +14903,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 6ca8aeaaf99bd44489acb55111bf188c, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6517d87b11d48ab439fe45d1802a7809, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6ca8aeaaf99bd44489acb55111bf188c, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (2)
@@ -14956,15 +15096,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPage: 3
   pageStep: {x: -656, y: 0, z: 0}
-  levelPagesRect: {fileID: 998539587}
   tweenTime: 0.35
   tweenType: 6
+  barDefault: {fileID: 5156776694448688124, guid: 20a567740d92c6448bcbf6f9bfb05cae, type: 3}
+  barActive: {fileID: 2978572862657520574, guid: 20a567740d92c6448bcbf6f9bfb05cae, type: 3}
+  levelPagesRect: {fileID: 998539587}
   barImages:
   - {fileID: 1949713884}
   - {fileID: 1598863578}
   - {fileID: 965520166}
-  barActive: {fileID: 2978572862657520574, guid: 20a567740d92c6448bcbf6f9bfb05cae, type: 3}
-  barDefault: {fileID: 5156776694448688124, guid: 20a567740d92c6448bcbf6f9bfb05cae, type: 3}
   nextButton: {fileID: 1756316590}
   previousButton: {fileID: 388965926}
 --- !u!1 &2057226501
@@ -15124,6 +15264,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 5bd579033f5edf649a8fee14a1f15d5b, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 95da280b9a84d344a8092f84176f0b75, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5bd579033f5edf649a8fee14a1f15d5b, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Name
       value: Level Button (2)
@@ -15232,6 +15380,14 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: d1af37cd29c478a4cbd8a01922937e99, type: 3}
     - target: {fileID: 3516871703267417661, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
       propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 00f33387528563141aa44ab393a7325e, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: graySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8cbbb5dfde68ecf4aaf765555fe20cce, type: 3}
+    - target: {fileID: 5428861426150763215, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}
+      propertyPath: coloredSprite
       value: 
       objectReference: {fileID: 21300000, guid: 00f33387528563141aa44ab393a7325e, type: 3}
     - target: {fileID: 6581920801167927059, guid: 200e6d384859d4241ab1b60ce1bd002d, type: 3}

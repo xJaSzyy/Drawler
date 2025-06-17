@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -38,7 +36,7 @@ public class PaintManager : MonoBehaviour
     private bool finished = false;
     private Color32 selectedColor;
     private Camera mainCamera;
-    private CustomColorList colorList = new CustomColorList();
+    private CustomColorList colorList = new();
     private Slider selectedSlider;
 
     private readonly Color32 darkColor = new(53, 55, 56, 255);

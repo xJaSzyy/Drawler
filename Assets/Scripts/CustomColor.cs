@@ -6,7 +6,7 @@ using System.Linq;
 [Serializable]
 public class CustomColorList
 {
-    [SerializeField] private List<CustomColor> colors = new List<CustomColor>();
+    [SerializeField] private List<CustomColor> colors = new();
 
     public void AddTile(CustomColor tile)
     {

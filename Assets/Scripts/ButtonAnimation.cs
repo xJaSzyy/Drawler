@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class ButtonAnimation : MonoBehaviour
 {
     private Button button;
-    private Vector3 upScale = new Vector3(1.1f, 1.1f, 1f);
+    private Vector3 upScale = new(1.1f, 1.1f, 1f);
 
     private void Awake()
     {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -27,9 +28,12 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private GameObject colorButtonPrefab;
     [SerializeField] private HistoryManager historyManager;
     [SerializeField] private CameraController cameraController;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip coloringSoundClip;
 
     [Header("Other")]
     [SerializeField] private Sprite sprite;
+    [SerializeField] private float volumeScale;
 
     private bool finished = false;
     private Color32 selectedColor;
@@ -82,6 +86,7 @@ public class PaintManager : MonoBehaviour
                     numberTilemap.SetTile(pos, null);
                     backTilemap.SetTile(pos, backTile);
 
+                    audioSource.PlayOneShot(coloringSoundClip, volumeScale);
                     colorList.GetTile(index).count--;
 
                     if (colorList.GetTile(index).count <= 0)

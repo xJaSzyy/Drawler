@@ -189,8 +189,8 @@ public class PaintManager : MonoBehaviour
                 Color32 grayColor = colorList.GetTile(index).grayColor;
                 Vector3Int pos = new(x, y, 0);
 
-                testTilemap.SetTile(pos, baseTile);
-                testTilemap.SetColor(pos, grayColor);
+                backTilemap.SetTile(pos, baseTile);
+                backTilemap.SetColor(pos, grayColor);
 
                 numberTilemap.SetTile(pos, numberTiles[index]);
                 numberTilemap.SetColor(pos, IsColorDark(grayColor) ? darkColor : lightColor);

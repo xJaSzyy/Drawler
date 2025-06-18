@@ -6,6 +6,7 @@ public class PageGenerator : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int countPerPage;
     [SerializeField] private List<Sprite> sprites = new();
+    [SerializeField] private List<Sprite> graySprites = new();
 
     [Header("References")]
     [SerializeField] private GameObject pageHolder;
@@ -20,7 +21,10 @@ public class PageGenerator : MonoBehaviour
         int pageCount = spritesCount / countPerPage;
 
         //other settings
-        DataHolder.colored = new int[spritesCount];
+        if (DataHolder.colored == null || DataHolder.colored.Length == 0)
+        {
+            DataHolder.colored = new int[spritesCount];
+        }
         swipeController.maxPage = pageCount;
 
         for (int i = 0; i < pageCount; i++)
@@ -38,7 +42,7 @@ public class PageGenerator : MonoBehaviour
         int index = 0;
         levelButtons.ForEach(x =>
         {
-            x.Setup(sprites[index], sprites[index]);
+            x.Setup(sprites[index], graySprites[index]);
             index++;
         });
 

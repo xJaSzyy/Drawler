@@ -3,18 +3,25 @@ using UnityEngine;
 
 public class PageGenerator : MonoBehaviour
 {
+    [Header("Settings")]
     [SerializeField] private int countPerPage;
-    [SerializeField] private GameObject pageHolder;
-    [SerializeField] private GameObject pagePrefab;
     [SerializeField] private List<Sprite> sprites = new();
 
-    [SerializeField] private List<LevelButton> levelButtons = new();
+    [Header("References")]
+    [SerializeField] private GameObject pageHolder;
+    [SerializeField] private GameObject pagePrefab;
+    [SerializeField] private SwipeController swipeController;
+
+    private List<LevelButton> levelButtons = new();
 
     private void Awake()
     {
-        DataHolder.colored = new int[sprites.Count];
+        int spritesCount = sprites.Count;
+        int pageCount = spritesCount / countPerPage;
 
-        int pageCount = sprites.Count / countPerPage;
+        //other settings
+        DataHolder.colored = new int[spritesCount];
+        swipeController.maxPage = pageCount;
 
         for (int i = 0; i < pageCount; i++)
         {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class SwipeController : MonoBehaviour, IEndDragHandler
 {
     [Header("Settings")]
-    [SerializeField] private int maxPage;
+    public int maxPage;
     [SerializeField] private Vector3 pageStep;
     [SerializeField] private float tweenTime;
     [SerializeField] private LeanTweenType tweenType;
@@ -14,17 +14,33 @@ public class SwipeController : MonoBehaviour, IEndDragHandler
 
     [Header("References")]
     [SerializeField] private RectTransform levelPagesRect;
-    [SerializeField] private Image[] barImages;
+    [SerializeField] private GameObject bar;
+    [SerializeField] private GameObject barImagePrefab;
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
 
+    private Image[] barImages;
     private int currentPage;
     private Vector3 targetPos;
     private float dragThreshould;
     private LTDescr tween;
 
-    private void Awake()
+    private void Start()
     {
+        barImages = new Image[maxPage];
+        for (int i = 0; i < maxPage; i++)
+        {
+            var barImage = Instantiate(barImagePrefab, bar.transform).GetComponent<Image>();
+            barImages[i] = barImage;
+        }
+
+        RectTransform barRect = bar.GetComponent<RectTransform>();
+        RectTransform prefabRect = barImagePrefab.GetComponent<RectTransform>();
+
+        float width = (prefabRect.rect.width + 16) * maxPage;
+        barRect.sizeDelta = new Vector2(width, barRect.sizeDelta.y);
+
+
         currentPage = 1;
         targetPos = levelPagesRect.localPosition;
         dragThreshould = Screen.width / 15;

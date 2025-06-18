@@ -11,7 +11,13 @@ public class LevelButton : MonoBehaviour
     private Button button;
     private ButtonAnimation buttonAnimation;
 
-    private void Awake()
+    public void Setup(Sprite coloredSprite, Sprite graySprite)
+    {
+        this.coloredSprite = coloredSprite;
+        this.graySprite = graySprite;    
+    }
+
+    public void Load()
     {
         button = GetComponent<Button>();
         buttonAnimation = GetComponent<ButtonAnimation>();

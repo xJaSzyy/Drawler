@@ -119,7 +119,7 @@ public class PaintManager : MonoBehaviour
     {
         int val = 255;
         int length = GetColorsCount();
-        int step = val / (int)(length * 1.5f);
+        int step = val / (int)(length * 1.75f);
         for (int i = 0; i < length; i++)
         {
             colorList.AddTile(new CustomColor(i));
@@ -131,7 +131,12 @@ public class PaintManager : MonoBehaviour
     private int GetColorsCount()
     {
         Texture2D texture = sprite.texture;
-        Color[] pixels = texture.GetPixels();
+        Color[] pixels = texture.GetPixels(
+            (int)sprite.rect.x,
+            (int)sprite.rect.y,
+            (int)sprite.rect.width,
+            (int)sprite.rect.height
+        );
 
         HashSet<Color> uniqueColors = new();
 
@@ -184,8 +189,8 @@ public class PaintManager : MonoBehaviour
                 Color32 grayColor = colorList.GetTile(index).grayColor;
                 Vector3Int pos = new(x, y, 0);
 
-                backTilemap.SetTile(pos, baseTile); 
-                backTilemap.SetColor(pos, grayColor);
+                testTilemap.SetTile(pos, baseTile);
+                testTilemap.SetColor(pos, grayColor);
 
                 numberTilemap.SetTile(pos, numberTiles[index]);
                 numberTilemap.SetColor(pos, IsColorDark(grayColor) ? darkColor : lightColor);
@@ -200,7 +205,7 @@ public class PaintManager : MonoBehaviour
     private void SpawnButtons()
     {
         RectTransform rectTransform = colorButtonsHolder.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(colorList.Count * 160, rectTransform.sizeDelta.y); 
+        rectTransform.sizeDelta = new Vector2(colorList.Count * 160, rectTransform.sizeDelta.y);
 
         for (int i = 0; i < colorList.Count; i++)
         {
@@ -387,5 +392,7 @@ public class PaintManager : MonoBehaviour
         byte[] bytes = texture.EncodeToPNG();
         string path = Path.Combine(Application.dataPath+"/Images", $"{sprite.name}_gray.png");
         File.WriteAllBytes(path, bytes);
+
+        Debug.Log($"Saved: {path}");
     }
 }

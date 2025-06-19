@@ -32,12 +32,14 @@ public class PaintManager : MonoBehaviour
     [Header("Other")]
     [SerializeField] private Sprite sprite;
     [SerializeField] private float volumeScale;
+    [SerializeField] private float audioInterval = 0.04f;
 
     private bool finished = false;
     private Color32 selectedColor;
     private Camera mainCamera;
     private CustomColorList colorList = new();
     private Slider selectedSlider;
+    private float lastPlayTime = 0f;
 
     private readonly Color32 darkColor = new(53, 55, 56, 255);
     private readonly Color32 lightColor = new(220, 224, 210, 255);
@@ -84,7 +86,7 @@ public class PaintManager : MonoBehaviour
                     numberTilemap.SetTile(pos, null);
                     backTilemap.SetTile(pos, backTile);
 
-                    audioSource.PlayOneShot(coloringSoundClip, volumeScale);
+                    PlaySound(coloringSoundClip, volumeScale);
                     colorList.GetTile(index).count--;
 
                     if (colorList.GetTile(index).count <= 0)
@@ -359,6 +361,15 @@ public class PaintManager : MonoBehaviour
         tilemap.CompressBounds();
         TileBase[] tiles = tilemap.GetTilesBlock(tilemap.cellBounds);
         return tiles.All(t => t == null);
+    }
+
+    void PlaySound(AudioClip clip, float volume)
+    {
+        if (Time.time - lastPlayTime > audioInterval)
+        {
+            audioSource.PlayOneShot(clip, volume);
+            lastPlayTime = Time.time;
+        }
     }
 
     private void DownloadPNG()

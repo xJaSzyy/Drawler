@@ -1481,6 +1481,7 @@ MonoBehaviour:
   coloringSoundClip: {fileID: 8300000, guid: 3de5ce90b1c88224d88cebfc40ea6c2f, type: 3}
   sprite: {fileID: 21300000, guid: c8fff52029eed2044b25d4cc2c9ec747, type: 3}
   volumeScale: 0.05
+  minInterval: 0.04
 --- !u!4 &1706656650
 Transform:
   m_ObjectHideFlags: 0

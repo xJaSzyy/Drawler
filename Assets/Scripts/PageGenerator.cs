@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class PageGenerator : MonoBehaviour
 {
@@ -12,6 +15,8 @@ public class PageGenerator : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject pageHolder;
     [SerializeField] private GameObject pagePrefab;
+    [SerializeField] private GameObject tabHolder;
+    [SerializeField] private GameObject tabPrefab;
     [SerializeField] private SwipeController swipeController;
 
     private List<LevelButton> levelButtons = new();
@@ -39,10 +44,12 @@ public class PageGenerator : MonoBehaviour
             }
         }
 
+        HashSet<string> tabNames = new HashSet<string>();
         int index = 0;
         levelButtons.ForEach(x =>
         {
             x.Setup(sprites[index], graySprites[index]);
+            tabNames.Add(sprites[index].name.Split('_')[0]);
             index++;
         });
 
@@ -51,12 +58,20 @@ public class PageGenerator : MonoBehaviour
             x.Load();
         });
 
-        Filter("Fruits");
-    }
+        foreach (string tabName in tabNames)
+        {
+            Button tabButton = Instantiate(tabPrefab, tabHolder.transform).GetComponent<Button>();
+            tabButton.gameObject.GetComponentInChildren<TMP_Text>().text = tabName;
+            tabButton.onClick.AddListener(() => Filter(tabName));
+        }
 
-    public void Filter(TMP_Text filter)
-    {
-        Filter(filter.text);
+        RectTransform tabHolderRect = tabHolder.GetComponent<RectTransform>();
+        RectTransform prefabRect = tabPrefab.GetComponent<RectTransform>();
+
+        float width = (prefabRect.rect.width + 16) * tabNames.Count;
+        tabHolderRect.sizeDelta = new Vector2(width, tabHolderRect.sizeDelta.y);
+
+        Filter(tabNames.First());
     }
 
     public void Filter(string filter)

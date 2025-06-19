@@ -36,6 +36,11 @@ public class LevelButton : MonoBehaviour
         }
     }
 
+    public Sprite GetSprite()
+    {
+        return coloredSprite;
+    }
+
     private void ButtonClick()
     {
         buttonAnimation.Animate(() =>

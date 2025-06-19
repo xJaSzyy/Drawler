@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PageGenerator : MonoBehaviour
@@ -20,13 +21,12 @@ public class PageGenerator : MonoBehaviour
         int spritesCount = sprites.Count;
         int pageCount = spritesCount / countPerPage;
 
-        //other settings
         if (DataHolder.colored == null || DataHolder.colored.Length == 0)
         {
             DataHolder.colored = new int[spritesCount];
         }
         swipeController.maxPage = pageCount;
-
+ 
         for (int i = 0; i < pageCount; i++)
         {
             var page = Instantiate(pagePrefab, pageHolder.transform);
@@ -50,5 +50,34 @@ public class PageGenerator : MonoBehaviour
         {
             x.Load();
         });
+
+        Filter("Fruits");
+    }
+
+    public void Filter(TMP_Text filter)
+    {
+        Filter(filter.text);
+    }
+
+    public void Filter(string filter)
+    {
+        swipeController.maxPage = 0;
+
+        levelButtons.ForEach(x =>
+        {
+            if (x.GetSprite().name.Contains(filter.ToLower()))
+            {
+                x.gameObject.transform.parent.gameObject.SetActive(true);
+                swipeController.maxPage++;
+            }
+            else
+            {
+                x.gameObject.transform.parent.gameObject.SetActive(false);
+            }
+        });
+
+        swipeController.maxPage /= countPerPage;
+
+        swipeController.UpdateUI();
     }
 }

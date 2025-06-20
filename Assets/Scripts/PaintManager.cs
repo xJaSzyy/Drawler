@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,8 @@ public class PaintManager : MonoBehaviour
 
     [Header("Tiles")]
     [SerializeField] private TileBase baseTile;
-    [SerializeField] private TileBase backTile;
+    [SerializeField] private TileBase backDarkTile;
+    [SerializeField] private TileBase backLightTile;
     [SerializeField] private List<TileBase> numberTiles;
     [SerializeField] private Sprite completeSprite;
 
@@ -40,6 +42,7 @@ public class PaintManager : MonoBehaviour
     private CustomColorList colorList = new();
     private Slider selectedSlider;
     private float lastPlayTime = 0f;
+    private TileBase backTile;
 
     private readonly Color32 darkColor = new(53, 55, 56, 255);
     private readonly Color32 lightColor = new(220, 224, 210, 255);
@@ -57,6 +60,7 @@ public class PaintManager : MonoBehaviour
     private void Start()
     {
         MatchingGrayTones();
+        GenerateBackground();
         GenerateImage();
         CenterCameraOnImage();
         SpawnButtons();
@@ -153,10 +157,38 @@ public class PaintManager : MonoBehaviour
         return uniqueColors.Count;
     }
 
-    private void GenerateImage()
+    private void GenerateBackground()
     {
         Texture2D texture = sprite.texture;
         Rect rect = sprite.rect;
+        
+        List<bool> darks = new List<bool>();
+        for (int y = 0; y < rect.height; y++)
+        {
+            for (int x = 0; x < rect.width; x++)
+            {
+                int texX = (int)rect.x + x;
+                int texY = (int)rect.y + y;
+
+                Color32 color = texture.GetPixel(texX, texY);
+
+                if (color.a < 255) { continue; }
+
+                darks.Add(IsColorDark(color));
+            }
+        }
+
+        int darkCount = darks.Count(b => b == true);
+        int lightCount = darks.Count(b => b == false);
+
+        if (darkCount >+ lightCount)
+        {
+            backTile = backDarkTile;
+        }
+        else 
+        {
+            backTile = backLightTile;
+        }
 
         int width = (int)rect.width;
         int height = (int)rect.height;
@@ -169,6 +201,12 @@ public class PaintManager : MonoBehaviour
                 backTilemap.SetTile(pos, backTile);
             }
         }
+    }
+
+    private void GenerateImage()
+    {
+        Texture2D texture = sprite.texture;
+        Rect rect = sprite.rect;
 
         for (int y = 0; y < rect.height; y++)
         {
@@ -198,6 +236,8 @@ public class PaintManager : MonoBehaviour
                 numberTilemap.SetColor(pos, IsColorDark(grayColor) ? darkColor : lightColor);
             }
         }
+
+        int width = (int)rect.width;
 
         float maxZoom = width - width * .25f;
         cameraController.SetBorders(0, width, maxZoom);

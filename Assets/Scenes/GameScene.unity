@@ -1370,7 +1370,8 @@ MonoBehaviour:
   backTilemap: {fileID: 1988410280}
   testTilemap: {fileID: 92792449}
   baseTile: {fileID: 11400000, guid: c055efaf333e9a34cbdb078576906265, type: 2}
-  backTile: {fileID: 11400000, guid: c0d611a7df06a884794541b06e21ac13, type: 2}
+  backDarkTile: {fileID: 11400000, guid: c0d611a7df06a884794541b06e21ac13, type: 2}
+  backLightTile: {fileID: 11400000, guid: 4110fb084cec7aa409b5a1e5867687bf, type: 2}
   numberTiles:
   - {fileID: 11400000, guid: 873b861d843f4b24f87ec0d42ebb7307, type: 2}
   - {fileID: 11400000, guid: cb45a7519e4063a488c3bb6e0d2ed424, type: 2}
@@ -1479,9 +1480,9 @@ MonoBehaviour:
   cameraController: {fileID: 519420033}
   audioSource: {fileID: 1401835547}
   coloringSoundClip: {fileID: 8300000, guid: 3de5ce90b1c88224d88cebfc40ea6c2f, type: 3}
-  sprite: {fileID: 21300000, guid: c8fff52029eed2044b25d4cc2c9ec747, type: 3}
+  sprite: {fileID: 0}
   volumeScale: 0.05
-  minInterval: 0.04
+  audioInterval: 0.04
 --- !u!4 &1706656650
 Transform:
   m_ObjectHideFlags: 0

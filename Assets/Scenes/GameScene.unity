@@ -1551,6 +1551,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 79550a36828a39543ba7c1971bba4bba, type: 2}
   - {fileID: 11400000, guid: 29747c127f8363c479fd045b011016be, type: 2}
   completeSprite: {fileID: 21300000, guid: 99f1f4f0466daf84e925a70eee557375, type: 3}
+  darkHomeSprite: {fileID: 21300000, guid: a8db19a8a7488af40abbf379dea4f67c, type: 3}
+  lightHomeSprite: {fileID: 21300000, guid: 671e489448684d242ada2b003e03750e, type: 3}
   colorButtonsHolder: {fileID: 1191715762}
   colorButtonPrefab: {fileID: 1414911870041598485, guid: 4a8ac3db44b8fc44da9aaf8ce1686280, type: 3}
   historyManager: {fileID: 1706656651}
@@ -1559,6 +1561,7 @@ MonoBehaviour:
   coloringSound: {fileID: 8300000, guid: 3de5ce90b1c88224d88cebfc40ea6c2f, type: 3}
   finishSound: {fileID: 8300000, guid: 61da3d8322e4cc9418cb195d5e07b381, type: 3}
   checkMark: {fileID: 1630248651}
+  homeImage: {fileID: 190181278}
   sprite: {fileID: 0}
   volumeScale: 0.05
   audioInterval: 0.04

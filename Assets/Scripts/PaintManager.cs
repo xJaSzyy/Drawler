@@ -16,12 +16,14 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private Tilemap backTilemap;
     [SerializeField] private Tilemap testTilemap;
 
-    [Header("Tiles")]
+    [Header("Tiles and Sprites")]
     [SerializeField] private TileBase baseTile;
     [SerializeField] private TileBase backDarkTile;
     [SerializeField] private TileBase backLightTile;
     [SerializeField] private List<TileBase> numberTiles;
     [SerializeField] private Sprite completeSprite;
+    [SerializeField] private Sprite darkHomeSprite;
+    [SerializeField] private Sprite lightHomeSprite;
 
     [Header("References")]
     [SerializeField] private GameObject colorButtonsHolder;
@@ -32,6 +34,7 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private AudioClip coloringSound;
     [SerializeField] private AudioClip finishSound;
     [SerializeField] private GameObject checkMark;
+    [SerializeField] private Image homeImage;
 
     [Header("Other")]
     [SerializeField] private Sprite sprite;
@@ -187,10 +190,12 @@ public class PaintManager : MonoBehaviour
         if (darkCount >+ lightCount)
         {
             backTile = backDarkTile;
+            homeImage.sprite = lightHomeSprite;
         }
         else 
         {
             backTile = backLightTile;
+            homeImage.sprite = darkHomeSprite;
         }
 
         int width = (int)rect.width;

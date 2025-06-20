@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
     private Camera mainCamera;
     private Vector3 dragOrigin;
     private bool isDragging = false;
+    private bool locked = false;
 
 
     private void Awake()
@@ -20,6 +21,8 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (locked) { return; }
+
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         if (scroll != 0)
@@ -71,4 +74,6 @@ public class CameraController : MonoBehaviour
     }
 
     public void SetZoom(float newSize = -1f) => mainCamera.orthographicSize = (newSize < 0) ? maxZoom : newSize;
+
+    public void Lock() => locked = true;
 }

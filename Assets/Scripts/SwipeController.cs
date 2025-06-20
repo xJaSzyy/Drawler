@@ -147,7 +147,7 @@ public class SwipeController : MonoBehaviour, IEndDragHandler
         {
             previousButton.interactable = false;
         }
-        else if (currentPage == maxPage)
+        if (currentPage == maxPage)
         {
             nextButton.interactable = false;
         }

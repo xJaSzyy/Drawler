@@ -29,7 +29,9 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private HistoryManager historyManager;
     [SerializeField] private CameraController cameraController;
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip coloringSoundClip;
+    [SerializeField] private AudioClip coloringSound;
+    [SerializeField] private AudioClip finishSound;
+    [SerializeField] private GameObject checkMark;
 
     [Header("Other")]
     [SerializeField] private Sprite sprite;
@@ -90,7 +92,7 @@ public class PaintManager : MonoBehaviour
                     numberTilemap.SetTile(pos, null);
                     backTilemap.SetTile(pos, backTile);
 
-                    PlaySound(coloringSoundClip, volumeScale);
+                    PlaySound(coloringSound, volumeScale);
                     colorList.GetTile(index).count--;
 
                     if (colorList.GetTile(index).count <= 0)
@@ -116,6 +118,7 @@ public class PaintManager : MonoBehaviour
             finished = true;
             DataHolder.colored[DataHolder.index] = 1;
             baseTilemap.ClearAllTiles();
+            cameraController.Lock();
 
             StartTimelapse();
         }
@@ -377,6 +380,11 @@ public class PaintManager : MonoBehaviour
             baseTilemap.SetTile(kvp.Key, baseTile);
             baseTilemap.SetColor(kvp.Key, kvp.Value);
         }
+
+        PlaySound(finishSound, volumeScale);
+        checkMark.transform.localScale = Vector3.zero;
+        checkMark.SetActive(true);
+        LeanTween.scale(checkMark, Vector3.one, 0.5f).setEase(LeanTweenType.easeOutBack);
     }
 
     void CenterCameraOnImage()

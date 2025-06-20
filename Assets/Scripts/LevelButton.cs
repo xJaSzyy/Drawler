@@ -33,6 +33,7 @@ public class LevelButton : MonoBehaviour
         else
         {
             transform.GetChild(0).GetComponent<Image>().sprite = coloredSprite;
+            transform.GetChild(1).gameObject.SetActive(true);
         }
     }
 

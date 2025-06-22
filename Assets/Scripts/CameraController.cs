@@ -9,7 +9,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float maxSize = 16f;
     [SerializeField] private float minSize = 0f;
 
-    private Slider zoomSlider;
     private Camera mainCamera;
     private Vector3 dragOrigin;
     private bool isDragging = false;
@@ -76,28 +75,21 @@ public class CameraController : MonoBehaviour
 
     public void SetZoom(float newSize = -1f)
     {
-        float size = (newSize < 0) ? maxZoom : newSize;
+        float size = (newSize  == -1f) ? maxZoom : newSize;
+        size = Mathf.Clamp(size, minZoom, maxZoom);
         mainCamera.orthographicSize = size;
-        zoomSlider.value = size;
     }
 
-    public Vector2 GetZoom() => new(minZoom, maxZoom);
-
-    public void SetSlider(Slider slider)
+    public void PlusZoom()
     {
-        zoomSlider = slider;
-        zoomSlider.value = maxZoom;
+        float step = (maxZoom - minZoom) / 5;
+        SetZoom(mainCamera.orthographicSize - step);
     }
 
-    public void UpdateZoom()
+    public void MinusZoom()
     {
-        if (zoomSlider != null)
-        {
-            if (zoomSlider.value <= maxZoom && zoomSlider.value >= minZoom)
-            {
-                mainCamera.orthographicSize = zoomSlider.value;
-            }
-        }
+        float step = (maxZoom - minZoom) / 5;
+        SetZoom(mainCamera.orthographicSize + step);
     }
 
     public void Lock() => locked = true;

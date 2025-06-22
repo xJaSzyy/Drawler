@@ -70,6 +70,7 @@ public class PaintManager : MonoBehaviour
         CenterCameraOnImage();
         SpawnButtons();
         FillCount();
+        SelectFirstColor();
     }
 
     private void Update()
@@ -115,6 +116,10 @@ public class PaintManager : MonoBehaviour
         }
 
         selectedSlider.value = colorList.GetTile(selectedColor).maxCount - colorList.GetTile(selectedColor).count;
+        if (selectedSlider.value == selectedSlider.maxValue)
+        {
+            selectedSlider.gameObject.SetActive(false);
+        }
 
         if (IsTilemapEmpty(numberTilemap))
         {
@@ -280,9 +285,6 @@ public class PaintManager : MonoBehaviour
                 }
             });
         }
-
-        selectedColor = colorList.GetTile(0).color;
-        HighlightSelectedNumber();
     }
 
     private void HighlightSelectedNumber()
@@ -359,6 +361,12 @@ public class PaintManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void SelectFirstColor()
+    {
+        selectedColor = colorList.GetTile(0).color;
+        HighlightSelectedNumber();
     }
 
     private void StartTimelapse()

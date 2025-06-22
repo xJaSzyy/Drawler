@@ -36,13 +36,10 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
         PlaySound();
 
         LeanTween.cancel(gameObject);
-
-        LeanTween.scale(gameObject, clickScale, 0.1f).setEaseOutQuad().setOnComplete(() =>
+        LeanTween.scale(gameObject, clickScale, .1f).setEaseOutQuad();
+        LeanTween.scale(gameObject, hoverScale, .1f).setEaseOutQuad().setDelay(.1f).setOnComplete(() =>
         {
-            LeanTween.scale(gameObject, hoverScale, 0.1f).setEaseOutQuad().setOnComplete(() =>
-            {
-                onComplete?.Invoke();
-            });
+            onComplete?.Invoke();
         });
     }
 
@@ -50,7 +47,7 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (clickSound != null && audioSource != null)
         {
-            audioSource.PlayOneShot(clickSound, 0.05f);
+            audioSource.PlayOneShot(clickSound, .05f);
         }
     }
 }

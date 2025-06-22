@@ -3,19 +3,24 @@ using UnityEngine;
 
 public class DynamicButton : MonoBehaviour
 {
-    public TMP_Text tabText;
-    public RectTransform buttonRectTransform; 
-    public float padding = 8f; 
+    [SerializeField] private TMP_Text text;
+    [SerializeField] private float padding = 8f;
+    
+    private RectTransform rectTransform; 
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+    }
 
     public void UpdateSize()
     {
-        if (tabText != null && buttonRectTransform != null)
+        if (text != null && rectTransform != null)
         {
-            float textWidth = tabText.preferredWidth;
-            float textHeight = tabText.preferredHeight;
+            float textWidth = text.preferredWidth;
+            float textHeight = text.preferredHeight;
 
-            buttonRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, textWidth + padding * 2);
-            //buttonRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textHeight + padding * 2);
+            rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, textWidth + padding * 2);
         }
     }
 }

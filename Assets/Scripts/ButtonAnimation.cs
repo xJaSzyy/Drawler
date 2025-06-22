@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,8 +12,20 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private Vector3 hoverScale = new(1.1f, 1.1f, 1f);
     private Vector3 clickScale = new(1.2f, 1.2f, 1f);
 
+    private Image image;
+    private TMP_Text text;
+
     private void Awake()
     {
+        if (TryGetComponent(out Image image))
+        {
+            this.image = image;
+        }
+        else
+        {
+            text = GetComponentInChildren<TMP_Text>();
+        }
+
         audioSource = FindAnyObjectByType<AudioSource>();
 
         button = GetComponent<Button>();
@@ -23,12 +36,28 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, hoverScale, .1f).setEaseOutQuad();
+        if (image != null)
+        {
+            image.color = Color.yellow;
+        }
+        else
+        {
+            text.color = Color.yellow;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, Vector3.one, .1f).setEaseOutQuad();
+        if (image != null)
+        {
+            image.color = Color.white;
+        }
+        else
+        {
+            text.color = Color.white;
+        }
     }
 
     public void Animate()

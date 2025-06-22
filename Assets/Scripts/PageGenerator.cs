@@ -19,6 +19,7 @@ public class PageGenerator : MonoBehaviour
     [SerializeField] private SwipeController swipeController;
 
     private List<LevelButton> levelButtons = new();
+    private List<GameObject> tabButtons = new();
 
     private void Awake()
     {
@@ -43,7 +44,7 @@ public class PageGenerator : MonoBehaviour
             }
         }
 
-        HashSet<string> tabNames = new HashSet<string>();
+        HashSet<string> tabNames = new();
         int index = 0;
         levelButtons.ForEach(x =>
         {
@@ -60,6 +61,7 @@ public class PageGenerator : MonoBehaviour
         foreach (string tabName in tabNames)
         {
             Button tabButton = Instantiate(tabPrefab, tabHolder.transform).GetComponent<Button>();
+            tabButtons.Add(tabButton.gameObject);
             tabButton.gameObject.GetComponentInChildren<TMP_Text>().text = tabName;
             tabButton.onClick.AddListener(() => Filter(tabName));
             tabButton.gameObject.GetComponent<DynamicButton>().UpdateSize();
@@ -94,5 +96,17 @@ public class PageGenerator : MonoBehaviour
         swipeController.maxPage /= countPerPage;
 
         swipeController.UpdateUI();
+
+        foreach (GameObject tabButton in tabButtons)
+        {
+            if (tabButton.GetComponentInChildren<TMP_Text>().text.Contains(filter.ToLower()))
+            {
+                tabButton.GetComponentInChildren<Image>().color = Color.yellow;
+            }
+            else
+            {
+                tabButton.GetComponentInChildren<Image>().color = Color.white;
+            }
+        }
     }
 }

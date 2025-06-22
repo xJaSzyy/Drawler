@@ -317,6 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickSound: {fileID: 8300000, guid: 8bde8c35aa998064d8cfa60ee7137eba, type: 3}
+  highlightElement: 2
 --- !u!114 &5629162960764317254
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private AudioClip clickSound;
+    [SerializeField] private HighlightElement highlightElement;
 
     private AudioSource audioSource;
     private Button button;
@@ -17,11 +18,11 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private void Awake()
     {
-        if (TryGetComponent(out Image image))
+        if (highlightElement == HighlightElement.Image)
         {
-            this.image = image;
+            image = GetComponent<Image>();
         }
-        else
+        else if (highlightElement == HighlightElement.Text)
         {
             text = GetComponentInChildren<TMP_Text>();
         }
@@ -36,11 +37,11 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, hoverScale, .1f).setEaseOutQuad();
-        if (image != null)
+        if (highlightElement == HighlightElement.Image)
         {
             image.color = Color.yellow;
         }
-        else
+        else if (highlightElement == HighlightElement.Text)
         {
             text.color = Color.yellow;
         }
@@ -50,11 +51,11 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, Vector3.one, .1f).setEaseOutQuad();
-        if (image != null)
+        if (highlightElement == HighlightElement.Image)
         {
             image.color = Color.white;
         }
-        else
+        else if (highlightElement == HighlightElement.Text)
         {
             text.color = Color.white;
         }
@@ -76,4 +77,11 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
             audioSource.PlayOneShot(clickSound, .05f);
         }
     }
+}
+
+public enum HighlightElement
+{
+    None = 0,
+    Image = 1,
+    Text = 2,
 }

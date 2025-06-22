@@ -3,7 +3,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows;
 
 public class PageGenerator : MonoBehaviour
 {
@@ -63,6 +62,7 @@ public class PageGenerator : MonoBehaviour
             Button tabButton = Instantiate(tabPrefab, tabHolder.transform).GetComponent<Button>();
             tabButton.gameObject.GetComponentInChildren<TMP_Text>().text = tabName;
             tabButton.onClick.AddListener(() => Filter(tabName));
+            tabButton.gameObject.GetComponent<DynamicButton>().UpdateSize();
         }
 
         RectTransform tabHolderRect = tabHolder.GetComponent<RectTransform>();

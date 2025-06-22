@@ -10,6 +10,8 @@ public class SceneFader : MonoBehaviour
     [SerializeField] private Image fadeImage;
     [SerializeField] private float fadeDuration = 1f;
 
+    private bool isTransitioning = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -30,6 +32,10 @@ public class SceneFader : MonoBehaviour
 
     public void FadeOutAndLoadScene(int sceneIndex)
     {
+        if (isTransitioning) { return; } 
+
+        isTransitioning = true; 
+
         LeanTween.alpha(fadeImage.rectTransform, 1f, fadeDuration).setOnComplete(() =>
         {
             StartCoroutine(LoadSceneAsync(sceneIndex));
@@ -56,5 +62,6 @@ public class SceneFader : MonoBehaviour
     public void FadeIn()
     {
         LeanTween.alpha(fadeImage.rectTransform, 0f, fadeDuration);
+        isTransitioning = false;
     }
 }

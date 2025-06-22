@@ -7,26 +7,19 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
 {
     [SerializeField] private AudioClip clickSound;
     [SerializeField] private HighlightElement highlightElement;
+    [SerializeField] private Image image;
+    [SerializeField] private TMP_Text text;
+    public Color color;
 
+    private Color imageColor;
+    private Color textColor;
     private AudioSource audioSource;
     private Button button;
     private Vector3 hoverScale = new(1.1f, 1.1f, 1f);
     private Vector3 clickScale = new(1.2f, 1.2f, 1f);
 
-    private Image image;
-    private TMP_Text text;
-
     private void Awake()
     {
-        if (highlightElement == HighlightElement.Image)
-        {
-            image = GetComponent<Image>();
-        }
-        else if (highlightElement == HighlightElement.Text)
-        {
-            text = GetComponentInChildren<TMP_Text>();
-        }
-
         audioSource = FindAnyObjectByType<AudioSource>();
 
         button = GetComponent<Button>();
@@ -39,11 +32,13 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
         LeanTween.scale(gameObject, hoverScale, .1f).setEaseOutQuad();
         if (highlightElement == HighlightElement.Image)
         {
-            image.color = Color.yellow;
+            imageColor = image.color;
+            image.color = color;
         }
-        else if (highlightElement == HighlightElement.Text)
+        if (highlightElement == HighlightElement.Text)
         {
-            text.color = Color.yellow;
+            textColor = text.color;
+            text.color = color;
         }
     }
 
@@ -53,11 +48,11 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
         LeanTween.scale(gameObject, Vector3.one, .1f).setEaseOutQuad();
         if (highlightElement == HighlightElement.Image)
         {
-            image.color = Color.white;
+            image.color = imageColor;
         }
-        else if (highlightElement == HighlightElement.Text)
+        if (highlightElement == HighlightElement.Text)
         {
-            text.color = Color.white;
+            text.color = textColor;
         }
     }
 

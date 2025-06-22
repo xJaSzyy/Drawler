@@ -35,6 +35,7 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private AudioClip finishSound;
     [SerializeField] private GameObject checkMark;
     [SerializeField] private Image homeImage;
+    [SerializeField] private Slider zoomSlider;
 
     [Header("Other")]
     [SerializeField] private Sprite sprite;
@@ -254,7 +255,10 @@ public class PaintManager : MonoBehaviour
 
         float maxZoom = width - width * .25f;
         cameraController.SetBorders(0, width, maxZoom);
+        cameraController.SetSlider(zoomSlider);
         cameraController.SetZoom();
+        zoomSlider.minValue = cameraController.GetZoom().x;
+        zoomSlider.maxValue = maxZoom;
     }
 
     private void SpawnButtons()
@@ -284,6 +288,7 @@ public class PaintManager : MonoBehaviour
                     HighlightSelectedNumber();
                 }
             });
+            button.GetComponent<ButtonAnimation>().color = IsColorDark(colorList.GetTile(i).color) ? Color.black : Color.white;
         }
     }
 
@@ -372,6 +377,7 @@ public class PaintManager : MonoBehaviour
     private void StartTimelapse()
     {
         colorButtonsHolder.gameObject.SetActive(false);
+        zoomSlider.gameObject.SetActive(false);
         CenterCameraOnImage();
         StartCoroutine(TimelapseCoroutine());
     }

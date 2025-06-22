@@ -138,6 +138,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickSound: {fileID: 8300000, guid: 8bde8c35aa998064d8cfa60ee7137eba, type: 3}
   highlightElement: 1
+  image: {fileID: 2252057996250885485}
+  text: {fileID: 0}
+  color: {r: 1, g: 1, b: 0, a: 1}
 --- !u!114 &5428861426150763215
 MonoBehaviour:
   m_ObjectHideFlags: 0

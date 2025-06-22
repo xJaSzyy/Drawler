@@ -44,11 +44,9 @@ public class LevelButton : MonoBehaviour
 
     private void ButtonClick()
     {
-        buttonAnimation.Animate(() =>
-        {
-            DataHolder.index = index;
-            DataHolder.sprite = coloredSprite;
-            SceneFader.Instance.FadeOutAndLoadScene(1);
-        });
+        buttonAnimation.Animate();
+        DataHolder.index = index;
+        DataHolder.sprite = coloredSprite;
+        SceneFader.Instance.FadeOutAndLoadScene(1);
     }
 }

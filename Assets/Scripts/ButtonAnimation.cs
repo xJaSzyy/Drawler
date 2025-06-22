@@ -16,7 +16,7 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
         audioSource = FindAnyObjectByType<AudioSource>();
 
         button = GetComponent<Button>();
-        button.onClick.AddListener(() => Animate(null));
+        button.onClick.AddListener(Animate);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -31,16 +31,13 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
         LeanTween.scale(gameObject, Vector3.one, .1f).setEaseOutQuad();
     }
 
-    public void Animate(System.Action onComplete)
+    public void Animate()
     {
         PlaySound();
 
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, clickScale, .1f).setEaseOutQuad();
-        LeanTween.scale(gameObject, hoverScale, .1f).setEaseOutQuad().setDelay(.1f).setOnComplete(() =>
-        {
-            onComplete?.Invoke();
-        });
+        LeanTween.scale(gameObject, hoverScale, .1f).setEaseOutQuad().setDelay(.1f);
     }
 
     private void PlaySound()

@@ -15,9 +15,7 @@ public class HomeButton : MonoBehaviour
 
     private void ButtonClick()
     {
-        buttonAnimation.Animate(() =>
-        {
-            SceneFader.Instance.FadeOutAndLoadScene(0);
-        });
+        buttonAnimation.Animate();
+        SceneFader.Instance.FadeOutAndLoadScene(0);
     }
 }

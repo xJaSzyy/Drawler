@@ -32,9 +32,9 @@ public class SceneFader : MonoBehaviour
 
     public void FadeOutAndLoadScene(int sceneIndex)
     {
-        if (isTransitioning) { return; } 
+        if (isTransitioning) { return; }
 
-        isTransitioning = true; 
+        isTransitioning = true;
 
         LeanTween.alpha(fadeImage.rectTransform, 1f, fadeDuration).setOnComplete(() =>
         {

@@ -284,6 +284,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df804b99af8e56c49b2f73833ba2d379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tabText: {fileID: 6539163781347816028}
-  buttonRectTransform: {fileID: 2016925080703600711}
+  text: {fileID: 6539163781347816028}
   padding: 8

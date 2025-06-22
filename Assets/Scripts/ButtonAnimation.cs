@@ -39,21 +39,7 @@ public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
         LeanTween.scale(gameObject, clickScale, 0.1f).setEaseOutQuad().setOnComplete(() =>
         {
-            bool isPointerOver = false;
-            var pointer = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
-            var raycastResults = new System.Collections.Generic.List<RaycastResult>();
-            EventSystem.current.RaycastAll(pointer, raycastResults);
-            foreach (var result in raycastResults)
-            {
-                if (result.gameObject == gameObject)
-                {
-                    isPointerOver = true;
-                    break;
-                }
-            }
-
-            Vector3 targetScale = isPointerOver ? hoverScale : Vector3.one;
-            LeanTween.scale(gameObject, targetScale, 0.1f).setEaseOutQuad().setOnComplete(() =>
+            LeanTween.scale(gameObject, hoverScale, 0.1f).setEaseOutQuad().setOnComplete(() =>
             {
                 onComplete?.Invoke();
             });

@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class DynamicButton : MonoBehaviour
 {
-    [SerializeField] private TMP_Text text;
     [SerializeField] private float padding = 8f;
     
     private RectTransform rectTransform; 
+    private TMP_Text text;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        text = GetComponentInChildren<TMP_Text>();
     }
 
     public void UpdateSize()

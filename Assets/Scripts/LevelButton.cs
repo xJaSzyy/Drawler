@@ -11,7 +11,13 @@ public class LevelButton : MonoBehaviour
     private Button button;
     private ButtonAnimation buttonAnimation;
 
-    private void Awake()
+    public void Setup(Sprite coloredSprite, Sprite graySprite)
+    {
+        this.coloredSprite = coloredSprite;
+        this.graySprite = graySprite;    
+    }
+
+    public void Load()
     {
         button = GetComponent<Button>();
         buttonAnimation = GetComponent<ButtonAnimation>();
@@ -27,16 +33,20 @@ public class LevelButton : MonoBehaviour
         else
         {
             transform.GetChild(0).GetComponent<Image>().sprite = coloredSprite;
+            transform.GetChild(1).gameObject.SetActive(true);
         }
+    }
+
+    public Sprite GetSprite()
+    {
+        return coloredSprite;
     }
 
     private void ButtonClick()
     {
-        buttonAnimation.Animate(() =>
-        {
-            DataHolder.index = index;
-            DataHolder.sprite = coloredSprite;
-            SceneFader.Instance.FadeOutAndLoadScene(1);
-        });
+        buttonAnimation.Animate();
+        DataHolder.index = index;
+        DataHolder.sprite = coloredSprite;
+        SceneFader.Instance.FadeOutAndLoadScene(1);
     }
 }

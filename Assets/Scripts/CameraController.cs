@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     private Camera mainCamera;
     private Vector3 dragOrigin;
     private bool isDragging = false;
-
+    private bool locked = false;
 
     private void Awake()
     {
@@ -21,6 +21,8 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (locked) { return; }
+
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         if (scroll != 0)
@@ -71,5 +73,24 @@ public class CameraController : MonoBehaviour
         this.maxZoom = maxZoom;
     }
 
-    public void SetZoom(float newSize = -1f) => mainCamera.orthographicSize = (newSize < 0) ? maxZoom : newSize;
+    public void SetZoom(float newSize = -1f)
+    {
+        float size = (newSize  == -1f) ? maxZoom : newSize;
+        size = Mathf.Clamp(size, minZoom, maxZoom);
+        mainCamera.orthographicSize = size;
+    }
+
+    public void PlusZoom()
+    {
+        float step = (maxZoom - minZoom) / 5;
+        SetZoom(mainCamera.orthographicSize - step);
+    }
+
+    public void MinusZoom()
+    {
+        float step = (maxZoom - minZoom) / 5;
+        SetZoom(mainCamera.orthographicSize + step);
+    }
+
+    public void Lock() => locked = true;
 }

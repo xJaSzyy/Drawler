@@ -16,26 +16,38 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private Tilemap backTilemap;
     [SerializeField] private Tilemap testTilemap;
 
-    [Header("Tiles")]
+    [Header("Tiles and Sprites")]
     [SerializeField] private TileBase baseTile;
-    [SerializeField] private TileBase backTile;
+    [SerializeField] private TileBase backDarkTile;
+    [SerializeField] private TileBase backLightTile;
     [SerializeField] private List<TileBase> numberTiles;
     [SerializeField] private Sprite completeSprite;
+    [SerializeField] private Sprite darkHomeSprite;
+    [SerializeField] private Sprite lightHomeSprite;
 
     [Header("References")]
     [SerializeField] private GameObject colorButtonsHolder;
     [SerializeField] private GameObject colorButtonPrefab;
     [SerializeField] private HistoryManager historyManager;
     [SerializeField] private CameraController cameraController;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip coloringSound;
+    [SerializeField] private AudioClip finishSound;
+    [SerializeField] private GameObject checkMark;
+    [SerializeField] private Image homeImage;
 
     [Header("Other")]
     [SerializeField] private Sprite sprite;
+    [SerializeField] private float volumeScale;
+    [SerializeField] private float audioInterval = 0.04f;
 
     private bool finished = false;
     private Color32 selectedColor;
     private Camera mainCamera;
-    private CustomColorList colorList = new CustomColorList();
+    private CustomColorList colorList = new();
     private Slider selectedSlider;
+    private float lastPlayTime = 0f;
+    private TileBase backTile;
 
     private readonly Color32 darkColor = new(53, 55, 56, 255);
     private readonly Color32 lightColor = new(220, 224, 210, 255);
@@ -53,10 +65,12 @@ public class PaintManager : MonoBehaviour
     private void Start()
     {
         MatchingGrayTones();
+        GenerateBackground();
         GenerateImage();
         CenterCameraOnImage();
         SpawnButtons();
         FillCount();
+        SelectFirstColor();
     }
 
     private void Update()
@@ -82,6 +96,7 @@ public class PaintManager : MonoBehaviour
                     numberTilemap.SetTile(pos, null);
                     backTilemap.SetTile(pos, backTile);
 
+                    PlaySound(coloringSound, volumeScale);
                     colorList.GetTile(index).count--;
 
                     if (colorList.GetTile(index).count <= 0)
@@ -101,12 +116,17 @@ public class PaintManager : MonoBehaviour
         }
 
         selectedSlider.value = colorList.GetTile(selectedColor).maxCount - colorList.GetTile(selectedColor).count;
+        if (selectedSlider.value == selectedSlider.maxValue)
+        {
+            selectedSlider.gameObject.SetActive(false);
+        }
 
         if (IsTilemapEmpty(numberTilemap))
         {
             finished = true;
             DataHolder.colored[DataHolder.index] = 1;
             baseTilemap.ClearAllTiles();
+            cameraController.Lock();
 
             StartTimelapse();
         }
@@ -116,7 +136,7 @@ public class PaintManager : MonoBehaviour
     {
         int val = 255;
         int length = GetColorsCount();
-        int step = val / (int)(length * 1.5f);
+        int step = val / (int)(length * 1.75f);
         for (int i = 0; i < length; i++)
         {
             colorList.AddTile(new CustomColor(i));
@@ -128,7 +148,12 @@ public class PaintManager : MonoBehaviour
     private int GetColorsCount()
     {
         Texture2D texture = sprite.texture;
-        Color[] pixels = texture.GetPixels();
+        Color[] pixels = texture.GetPixels(
+            (int)sprite.rect.x,
+            (int)sprite.rect.y,
+            (int)sprite.rect.width,
+            (int)sprite.rect.height
+        );
 
         HashSet<Color> uniqueColors = new();
 
@@ -143,10 +168,40 @@ public class PaintManager : MonoBehaviour
         return uniqueColors.Count;
     }
 
-    private void GenerateImage()
+    private void GenerateBackground()
     {
         Texture2D texture = sprite.texture;
         Rect rect = sprite.rect;
+        
+        List<bool> darks = new List<bool>();
+        for (int y = 0; y < rect.height; y++)
+        {
+            for (int x = 0; x < rect.width; x++)
+            {
+                int texX = (int)rect.x + x;
+                int texY = (int)rect.y + y;
+
+                Color32 color = texture.GetPixel(texX, texY);
+
+                if (color.a < 255) { continue; }
+
+                darks.Add(IsColorDark(color));
+            }
+        }
+
+        int darkCount = darks.Count(b => b == true);
+        int lightCount = darks.Count(b => b == false);
+
+        if (darkCount >+ lightCount)
+        {
+            backTile = backDarkTile;
+            homeImage.sprite = lightHomeSprite;
+        }
+        else 
+        {
+            backTile = backLightTile;
+            homeImage.sprite = darkHomeSprite;
+        }
 
         int width = (int)rect.width;
         int height = (int)rect.height;
@@ -159,6 +214,12 @@ public class PaintManager : MonoBehaviour
                 backTilemap.SetTile(pos, backTile);
             }
         }
+    }
+
+    private void GenerateImage()
+    {
+        Texture2D texture = sprite.texture;
+        Rect rect = sprite.rect;
 
         for (int y = 0; y < rect.height; y++)
         {
@@ -181,13 +242,15 @@ public class PaintManager : MonoBehaviour
                 Color32 grayColor = colorList.GetTile(index).grayColor;
                 Vector3Int pos = new(x, y, 0);
 
-                backTilemap.SetTile(pos, baseTile); 
+                backTilemap.SetTile(pos, baseTile);
                 backTilemap.SetColor(pos, grayColor);
 
                 numberTilemap.SetTile(pos, numberTiles[index]);
                 numberTilemap.SetColor(pos, IsColorDark(grayColor) ? darkColor : lightColor);
             }
         }
+
+        int width = (int)rect.width;
 
         float maxZoom = width - width * .25f;
         cameraController.SetBorders(0, width, maxZoom);
@@ -197,7 +260,7 @@ public class PaintManager : MonoBehaviour
     private void SpawnButtons()
     {
         RectTransform rectTransform = colorButtonsHolder.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(colorList.Count * 160, rectTransform.sizeDelta.y); 
+        rectTransform.sizeDelta = new Vector2(colorList.Count * 160, rectTransform.sizeDelta.y);
 
         for (int i = 0; i < colorList.Count; i++)
         {
@@ -221,10 +284,8 @@ public class PaintManager : MonoBehaviour
                     HighlightSelectedNumber();
                 }
             });
+            button.GetComponent<ButtonAnimation>().color = IsColorDark(colorList.GetTile(i).color) ? Color.black : Color.white;
         }
-
-        selectedColor = colorList.GetTile(0).color;
-        HighlightSelectedNumber();
     }
 
     private void HighlightSelectedNumber()
@@ -303,6 +364,12 @@ public class PaintManager : MonoBehaviour
         }
     }
 
+    private void SelectFirstColor()
+    {
+        selectedColor = colorList.GetTile(0).color;
+        HighlightSelectedNumber();
+    }
+
     private void StartTimelapse()
     {
         colorButtonsHolder.gameObject.SetActive(false);
@@ -327,6 +394,11 @@ public class PaintManager : MonoBehaviour
             baseTilemap.SetTile(kvp.Key, baseTile);
             baseTilemap.SetColor(kvp.Key, kvp.Value);
         }
+
+        PlaySound(finishSound, volumeScale);
+        checkMark.transform.localScale = Vector3.zero;
+        checkMark.SetActive(true);
+        LeanTween.scale(checkMark, Vector3.one, 0.5f).setEase(LeanTweenType.easeOutBack);
     }
 
     void CenterCameraOnImage()
@@ -351,6 +423,15 @@ public class PaintManager : MonoBehaviour
         tilemap.CompressBounds();
         TileBase[] tiles = tilemap.GetTilesBlock(tilemap.cellBounds);
         return tiles.All(t => t == null);
+    }
+
+    void PlaySound(AudioClip clip, float volume)
+    {
+        if (Time.time - lastPlayTime > audioInterval)
+        {
+            audioSource.PlayOneShot(clip, volume);
+            lastPlayTime = Time.time;
+        }
     }
 
     private void DownloadPNG()
@@ -384,5 +465,7 @@ public class PaintManager : MonoBehaviour
         byte[] bytes = texture.EncodeToPNG();
         string path = Path.Combine(Application.dataPath+"/Images", $"{sprite.name}_gray.png");
         File.WriteAllBytes(path, bytes);
+
+        Debug.Log($"Saved: {path}");
     }
 }

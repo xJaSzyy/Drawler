@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class SwipeController : MonoBehaviour, IEndDragHandler
 {
     [Header("Settings")]
-    [SerializeField] private int maxPage;
+    public int maxPage;
     [SerializeField] private Vector3 pageStep;
     [SerializeField] private float tweenTime;
     [SerializeField] private LeanTweenType tweenType;
@@ -14,19 +14,57 @@ public class SwipeController : MonoBehaviour, IEndDragHandler
 
     [Header("References")]
     [SerializeField] private RectTransform levelPagesRect;
-    [SerializeField] private Image[] barImages;
+    [SerializeField] private GameObject bar;
+    [SerializeField] private GameObject barImagePrefab;
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
 
+    private Image[] barImages;
     private int currentPage;
     private Vector3 targetPos;
     private float dragThreshould;
     private LTDescr tween;
+    private ScrollRect scrollRect;
 
     private void Awake()
     {
+        scrollRect = GetComponent<ScrollRect>();
+    }
+
+    private void Start()
+    {
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        foreach (Transform child in bar.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        barImages = new Image[maxPage];
+        for (int i = 0; i < maxPage; i++)
+        {
+            var barImage = Instantiate(barImagePrefab, bar.transform).GetComponent<Image>();
+            barImages[i] = barImage;
+        }
+
+        RectTransform barRect = bar.GetComponent<RectTransform>();
+        RectTransform prefabRect = barImagePrefab.GetComponent<RectTransform>();
+
+        float width = (prefabRect.rect.width + 16) * maxPage;
+        barRect.sizeDelta = new Vector2(width, barRect.sizeDelta.y);
+
+        if (scrollRect != null)
+        {
+            scrollRect.horizontalNormalizedPosition = 0f;
+        }
+
+        levelPagesRect.localPosition = Vector3.zero;
+        targetPos = Vector3.zero;
+
         currentPage = 1;
-        targetPos = levelPagesRect.localPosition;
         dragThreshould = Screen.width / 15;
         UpdateBar();
         UpdateArrowButton();
@@ -109,7 +147,7 @@ public class SwipeController : MonoBehaviour, IEndDragHandler
         {
             previousButton.interactable = false;
         }
-        else if (currentPage == maxPage)
+        if (currentPage == maxPage)
         {
             nextButton.interactable = false;
         }

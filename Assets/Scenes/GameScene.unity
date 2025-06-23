@@ -256,6 +256,7 @@ GameObject:
   - component: {fileID: 190181277}
   - component: {fileID: 190181276}
   - component: {fileID: 190181275}
+  - component: {fileID: 190181280}
   m_Layer: 5
   m_Name: Home Button
   m_TagString: Untagged
@@ -393,6 +394,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190181273}
   m_CullTransparentMesh: 1
+--- !u!114 &190181280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190181273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a67bad0b991fd4f8c579aad9ceb1b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 190181278}
+  darkSprite: {fileID: 21300000, guid: a8db19a8a7488af40abbf379dea4f67c, type: 3}
+  lightSprite: {fileID: 21300000, guid: 671e489448684d242ada2b003e03750e, type: 3}
 --- !u!1 &213847356
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1044,7 @@ GameObject:
   - component: {fileID: 1024192772}
   - component: {fileID: 1024192771}
   - component: {fileID: 1024192770}
+  - component: {fileID: 1024192774}
   m_Layer: 5
   m_Name: 'Minus Button '
   m_TagString: Untagged
@@ -1165,6 +1182,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1024192768}
   m_CullTransparentMesh: 1
+--- !u!114 &1024192774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024192768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a67bad0b991fd4f8c579aad9ceb1b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1024192772}
+  darkSprite: {fileID: -1088812320, guid: 753ade440bab8c842a249ce9b4cfbc23, type: 3}
+  lightSprite: {fileID: 815979004776655039, guid: 6277b4dc170962b428aff37593e61736, type: 3}
 --- !u!1 &1191715762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1969,6 +2001,7 @@ GameObject:
   - component: {fileID: 1703162373}
   - component: {fileID: 1703162372}
   - component: {fileID: 1703162371}
+  - component: {fileID: 1703162375}
   m_Layer: 5
   m_Name: Plus Button
   m_TagString: Untagged
@@ -2106,6 +2139,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703162369}
   m_CullTransparentMesh: 1
+--- !u!114 &1703162375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703162369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a67bad0b991fd4f8c579aad9ceb1b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1703162373}
+  darkSprite: {fileID: 1900961363, guid: 753ade440bab8c842a249ce9b4cfbc23, type: 3}
+  lightSprite: {fileID: 1973971886, guid: 6277b4dc170962b428aff37593e61736, type: 3}
 --- !u!1 &1706656648
 GameObject:
   m_ObjectHideFlags: 0
@@ -2256,6 +2304,8 @@ MonoBehaviour:
   finishSound: {fileID: 8300000, guid: 61da3d8322e4cc9418cb195d5e07b381, type: 3}
   checkMark: {fileID: 1630248651}
   homeImage: {fileID: 190181278}
+  plusButton: {fileID: 1703162369}
+  minusButton: {fileID: 1024192768}
   sprite: {fileID: 0}
   volumeScale: 0.05
   audioInterval: 0.04

@@ -22,8 +22,6 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private TileBase backLightTile;
     [SerializeField] private List<TileBase> numberTiles;
     [SerializeField] private Sprite completeSprite;
-    [SerializeField] private Sprite darkHomeSprite;
-    [SerializeField] private Sprite lightHomeSprite;
 
     [Header("References")]
     [SerializeField] private GameObject colorButtonsHolder;
@@ -34,7 +32,8 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private AudioClip coloringSound;
     [SerializeField] private AudioClip finishSound;
     [SerializeField] private GameObject checkMark;
-    [SerializeField] private Image homeImage;
+    [SerializeField] private GameObject plusButton;
+    [SerializeField] private GameObject minusButton;
 
     [Header("Other")]
     [SerializeField] private Sprite sprite;
@@ -195,12 +194,14 @@ public class PaintManager : MonoBehaviour
         if (darkCount >+ lightCount)
         {
             backTile = backDarkTile;
-            homeImage.sprite = lightHomeSprite;
+            DataHolder.theme = "dark";
+            //homeImage.sprite = lightHomeSprite;
         }
         else 
         {
             backTile = backLightTile;
-            homeImage.sprite = darkHomeSprite;
+            DataHolder.theme = "light";
+            //homeImage.sprite = darkHomeSprite;
         }
 
         int width = (int)rect.width;
@@ -213,6 +214,12 @@ public class PaintManager : MonoBehaviour
                 Vector3Int pos = new(x, y, 0);
                 backTilemap.SetTile(pos, backTile);
             }
+        }
+
+        var items = FindObjectsByType<ThemeChanger>(FindObjectsSortMode.None);
+        foreach (var item in items)
+        {
+            item.UpdateUI();
         }
     }
 
@@ -372,7 +379,9 @@ public class PaintManager : MonoBehaviour
 
     private void StartTimelapse()
     {
-        colorButtonsHolder.gameObject.SetActive(false);
+        colorButtonsHolder.SetActive(false);
+        plusButton.SetActive(false);
+        minusButton.SetActive(false);
         CenterCameraOnImage();
         StartCoroutine(TimelapseCoroutine());
     }

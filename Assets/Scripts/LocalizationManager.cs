@@ -52,6 +52,16 @@ public class LocalizationManager : MonoBehaviour
     {
         return elements.First(x => x.en_name == en_name).id;
     }
+
+    public void SetLanguage(LocalizationLanguage newLanguage) 
+    {
+        language = newLanguage;
+        var items = FindObjectsByType<Localizator>(FindObjectsSortMode.None);
+        foreach (var item in items)
+        {
+            item.UpdateText();
+        }
+    }
 }
 
 public struct LocalizationElement

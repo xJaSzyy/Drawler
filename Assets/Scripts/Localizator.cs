@@ -10,9 +10,12 @@ public class Localizator : MonoBehaviour
     private void Awake()
     {
         text = GetComponent<TMP_Text>();
+    }
 
+    public void UpdateText() 
+    {
         string result = string.Empty;
-        while (result == "not found" || result == string.Empty)
+        while (result == string.Empty)
         {
             result = LocalizationManager.Instance.GetLocalization(id);
         }

@@ -65,9 +65,7 @@ public class PageGenerator : MonoBehaviour
             tabButton.gameObject.GetComponentInChildren<TMP_Text>().text = tabName;
             var childText = tabButton.gameObject.transform.GetChild(1);
             childText.AddComponent<Localizator>();
-            var localizator = childText.GetComponent<Localizator>();
-            localizator.id = LocalizationManager.Instance.GetId(tabName);
-            localizator.UpdateText();
+            childText.GetComponent<Localizator>().SetId(LocalizationManager.Instance.GetId(tabName));
             tabButton.onClick.AddListener(() => Filter(tabName));
             tabButton.gameObject.GetComponent<DynamicButton>().UpdateSize();
         }

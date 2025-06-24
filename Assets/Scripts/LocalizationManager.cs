@@ -24,12 +24,12 @@ public class LocalizationManager : MonoBehaviour
 
     private void Start()
     {
-        elements.Add(new LocalizationElement(0, "clothes", "одежда"));
-        elements.Add(new LocalizationElement(1, "fruits", "фрукты"));
-        elements.Add(new LocalizationElement(2, "minecraft", "майнкрафт"));
-        elements.Add(new LocalizationElement(3, "space", "космос"));
-        elements.Add(new LocalizationElement(4, "vegetables", "овощи"));
-        elements.Add(new LocalizationElement(5, "weapons", "оружие"));
+        elements.Add(new LocalizationElement(0, "clothes", "РѕРґРµР¶РґР°"));
+        elements.Add(new LocalizationElement(1, "fruits", "С„СЂСѓРєС‚С‹"));
+        elements.Add(new LocalizationElement(2, "minecraft", "РјР°Р№РЅРєСЂР°С„С‚"));
+        elements.Add(new LocalizationElement(3, "space", "РєРѕСЃРјРѕСЃ"));
+        elements.Add(new LocalizationElement(4, "vegetables", "РѕРІРѕС‰Рё"));
+        elements.Add(new LocalizationElement(5, "weapons", "РѕСЂСѓР¶РёРµ"));
     }
 
     public string GetLocalization(int id)
@@ -45,7 +45,7 @@ public class LocalizationManager : MonoBehaviour
             return element.ru_name;
         }
 
-        return "not found";
+        return string.Empty;
     }
 
     public int GetId(string en_name)

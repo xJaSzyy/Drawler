@@ -3,13 +3,18 @@ using UnityEngine;
 
 public class Localizator : MonoBehaviour
 {
-    [SerializeField] private int id;
+    [SerializeField] private int id = -1;
 
     private TMP_Text text;
 
     private void Awake()
     {
         text = GetComponent<TMP_Text>();
+
+        if (id != -1) 
+        {
+            UpdateText();
+        }
     }
 
     public void SetId(int newId) 

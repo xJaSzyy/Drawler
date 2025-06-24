@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Localizator : MonoBehaviour
 {
-    [SerializeField] private int id;
+    public int id;
 
     private TMP_Text text;
 

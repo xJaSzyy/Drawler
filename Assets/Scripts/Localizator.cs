@@ -25,11 +25,7 @@ public class Localizator : MonoBehaviour
 
     public void UpdateText() 
     {
-        string result = string.Empty;
-        while (result == string.Empty)
-        {
-            result = LocalizationManager.Instance.GetLocalization(id);
-        }
+        string result = LocalizationManager.Instance.GetLocalization(id);
         text.text = result;
     }
 }

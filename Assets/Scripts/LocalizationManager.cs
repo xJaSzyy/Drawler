@@ -5,16 +5,30 @@ using UnityEngine;
 
 public class LocalizationManager : MonoBehaviour
 {
-    public static LocalizationManager Instance { get; private set; }
+    public static LocalizationManager instance { get; private set; }
+
+    public static LocalizationManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                GameObject go = new GameObject("LocalizationManager");
+                instance = go.AddComponent<LocalizationManager>();
+                DontDestroyOnLoad(go);
+            }
+            return instance;
+        }
+    }
 
     private List<LocalizationElement> elements = new();
     private LocalizationLanguage language = LocalizationLanguage.ru;
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -71,7 +85,7 @@ public class LocalizationManager : MonoBehaviour
         return element?.id ?? -1;
     }
 
-    public void ChangeLanguage() 
+    public LocalizationLanguage ChangeLanguage() 
     {
         language = language == LocalizationLanguage.en ? LocalizationLanguage.ru : LocalizationLanguage.en;
 
@@ -92,7 +106,11 @@ public class LocalizationManager : MonoBehaviour
         {
             pageGenerator.UpdateTab();
         }
+
+        return language;
     }
+
+    public LocalizationLanguage GetLanguage() => language;
 }
 
 public class LocalizationElement

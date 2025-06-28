@@ -40,7 +40,7 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private float volumeScale;
     [SerializeField] private float audioInterval = 0.04f;
 
-    private bool finished = false;
+    public bool finished = false;
     private Color32 selectedColor;
     private Camera mainCamera;
     private CustomColorList colorList = new();

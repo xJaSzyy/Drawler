@@ -12,7 +12,18 @@ public class HomeButton : MonoBehaviour
     {
         button = GetComponent<Button>();
         buttonAnimation = GetComponent<ButtonAnimation>();
-        button.onClick.AddListener(ShowPopup);
+        button.onClick.AddListener(() =>
+        {
+            PaintManager paintManager = FindAnyObjectByType<PaintManager>();
+            if (!paintManager.finished)
+            {
+                ShowPopup();
+            }
+            else
+            {
+                ButtonClick();
+            }
+        });
     }
 
     private void ShowPopup()
@@ -23,6 +34,7 @@ public class HomeButton : MonoBehaviour
 
     private void ButtonClick()
     {
+        buttonAnimation.Animate();
         SceneFader.Instance.FadeOutAndLoadScene(0);
     }
 }

@@ -9,19 +9,31 @@ public class PopupController : MonoBehaviour
 
     private void Awake()
     {
-        cancelButton.onClick.AddListener(Close);
+        cancelButton.onClick.AddListener(() =>
+        {
+            cancelButton.gameObject.GetComponent<ButtonAnimation>().Animate();
+            Close();
+        });
     }
 
     public void Show(UnityAction ConfirmClick)
     {
         confirmButton.onClick.RemoveAllListeners();
-        confirmButton.onClick.AddListener(ConfirmClick);
+        confirmButton.onClick.AddListener(() =>
+        {
+            Close();
+            ConfirmClick();
+        });
 
         gameObject.SetActive(true);
     }
 
     public void Close()
     {
-        gameObject.SetActive(false);
+        LeanTween.scale(gameObject, Vector3.zero, 0.3f).setEase(LeanTweenType.easeInBack).setOnComplete(() =>
+        {
+            gameObject.SetActive(false);
+            gameObject.transform.localScale = Vector3.one;
+        });
     }
 }

@@ -6,6 +6,7 @@ public class LanguageButton : MonoBehaviour
 {
     [SerializeField] private Sprite enSprite;
     [SerializeField] private Sprite ruSprite;
+    [SerializeField] private float animationSpeed = .2f;
 
     private Image image;
 
@@ -18,6 +19,12 @@ public class LanguageButton : MonoBehaviour
     public void ChangeLanguage()
     {
         var language = LocalizationManager.Instance.ChangeLanguage();
-        image.sprite = language == LocalizationLanguage.en ? enSprite : ruSprite;
+        Sprite newSprite = language == LocalizationLanguage.en ? enSprite : ruSprite;
+
+        LeanTween.scale(image.rectTransform, Vector3.zero, animationSpeed).setOnComplete(() =>
+        {
+            image.sprite = newSprite;
+            LeanTween.scale(image.rectTransform, Vector3.one, animationSpeed).setEase(LeanTweenType.easeOutBack);
+        });
     }
 }

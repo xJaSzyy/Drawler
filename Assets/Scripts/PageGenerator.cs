@@ -20,8 +20,9 @@ public class PageGenerator : MonoBehaviour
 
     private List<LevelButton> levelButtons = new();
     private List<GameObject> tabButtons = new();
+    private HashSet<string> tabNames = new();
 
-    private void Awake()
+    private void Start()
     {
         int spritesCount = sprites.Count;
         int pageCount = spritesCount / countPerPage;
@@ -44,7 +45,6 @@ public class PageGenerator : MonoBehaviour
             }
         }
 
-        HashSet<string> tabNames = new();
         int index = 0;
         levelButtons.ForEach(x =>
         {
@@ -63,15 +63,14 @@ public class PageGenerator : MonoBehaviour
             Button tabButton = Instantiate(tabPrefab, tabHolder.transform).GetComponent<Button>();
             tabButtons.Add(tabButton.gameObject);
             tabButton.gameObject.GetComponentInChildren<TMP_Text>().text = tabName;
+            var childText = tabButton.gameObject.transform.GetChild(1).gameObject;
+            childText.AddComponent<Localizator>();
+            childText.GetComponent<Localizator>().SetId(LocalizationManager.Instance.GetId(tabName));
             tabButton.onClick.AddListener(() => Filter(tabName));
             tabButton.gameObject.GetComponent<DynamicButton>().UpdateSize();
         }
 
-        RectTransform tabHolderRect = tabHolder.GetComponent<RectTransform>();
-        RectTransform prefabRect = tabPrefab.GetComponent<RectTransform>();
-
-        float width = (prefabRect.rect.width + 16) * tabNames.Count;
-        tabHolderRect.sizeDelta = new Vector2(width, tabHolderRect.sizeDelta.y);
+        UpdateTab();
 
         Filter(tabNames.First());
     }
@@ -99,7 +98,7 @@ public class PageGenerator : MonoBehaviour
 
         foreach (GameObject tabButton in tabButtons)
         {
-            if (tabButton.GetComponentInChildren<TMP_Text>().text.Contains(filter.ToLower()))
+            if (tabButton.GetComponentInChildren<TMP_Text>().text.Contains(LocalizationManager.Instance.GetLocalization(filter.ToLower())))
             {
                 tabButton.GetComponentInChildren<Image>().color = Color.yellow;
             }
@@ -109,4 +108,15 @@ public class PageGenerator : MonoBehaviour
             }
         }
     }
-}
+
+    public void UpdateTab()
+    {
+        RectTransform tabHolderRect = tabHolder.GetComponent<RectTransform>();
+        RectTransform prefabRect = tabPrefab.GetComponent<RectTransform>();
+
+        float width = (prefabRect.rect.width + 16) * tabNames.Count;
+        tabHolderRect.sizeDelta = new Vector2(width, tabHolderRect.sizeDelta.y);
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(tabHolderRect);
+    }
+ }

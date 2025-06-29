@@ -26,6 +26,8 @@ public class PopupController : MonoBehaviour
         });
 
         gameObject.SetActive(true);
+        gameObject.transform.localScale = Vector3.zero;
+        LeanTween.scale(gameObject, Vector3.one, 0.3f).setEase(LeanTweenType.easeOutBack);
     }
 
     public void Close()

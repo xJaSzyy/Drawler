@@ -195,13 +195,11 @@ public class PaintManager : MonoBehaviour
         {
             backTile = backDarkTile;
             DataHolder.theme = "dark";
-            //homeImage.sprite = lightHomeSprite;
         }
         else 
         {
             backTile = backLightTile;
             DataHolder.theme = "light";
-            //homeImage.sprite = darkHomeSprite;
         }
 
         int width = (int)rect.width;

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d1af37cd29c478a4cbd8a01922937e99
+guid: f1e6a27af0ba67c46a82cc70ea62c9af
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2638237814469517852
-    second: stroke_0
+      213: -6351617318852302439
+    second: popup_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 6, y: 6, z: 6, w: 6}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: stroke_0
+      name: popup_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4ed9a8b8fa8136bd0800000000000000
-      internalID: -2638237814469517852
+      spriteID: 999e69863b58ad7a0800000000000000
+      internalID: -6351617318852302439
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      stroke_0: -2638237814469517852
+      popup_0: -6351617318852302439
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

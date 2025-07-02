@@ -40,7 +40,7 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private float volumeScale;
     [SerializeField] private float audioInterval = 0.04f;
 
-    private bool finished = false;
+    public bool finished = false;
     private Color32 selectedColor;
     private Camera mainCamera;
     private CustomColorList colorList = new();
@@ -195,13 +195,11 @@ public class PaintManager : MonoBehaviour
         {
             backTile = backDarkTile;
             DataHolder.theme = "dark";
-            //homeImage.sprite = lightHomeSprite;
         }
         else 
         {
             backTile = backLightTile;
             DataHolder.theme = "light";
-            //homeImage.sprite = darkHomeSprite;
         }
 
         int width = (int)rect.width;

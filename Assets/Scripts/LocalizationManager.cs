@@ -22,7 +22,7 @@ public class LocalizationManager : MonoBehaviour
     }
 
     private List<LocalizationElement> elements = new();
-    private LocalizationLanguage language = LocalizationLanguage.ru;
+    private LocalizationLanguage language = LocalizationLanguage.en;
 
     private void Awake()
     {
@@ -42,6 +42,8 @@ public class LocalizationManager : MonoBehaviour
         elements.Add(new LocalizationElement(3, "space", "космос"));
         elements.Add(new LocalizationElement(4, "vegetables", "овощи"));
         elements.Add(new LocalizationElement(5, "weapons", "оружие"));
+        elements.Add(new LocalizationElement(6, "The progress will be lost. Are you sure?", "Прогресс будет потерян. Вы уверены?"));
+        elements.Add(new LocalizationElement(7, "The drawing is already colored. Repeat?", "Рисунок уже раскрашен. Повторить?"));
     }
 
     public string GetLocalization(int id)

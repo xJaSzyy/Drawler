@@ -8,6 +8,7 @@ public class HighlightElementEditor : Editor
     SerializedProperty imageProp;
     SerializedProperty textProp;
     SerializedProperty colorProp;
+    SerializedProperty clickSoundProp;
 
     private void OnEnable()
     {
@@ -15,12 +16,14 @@ public class HighlightElementEditor : Editor
         imageProp = serializedObject.FindProperty("image");
         textProp = serializedObject.FindProperty("text");
         colorProp = serializedObject.FindProperty("color");
+        clickSoundProp = serializedObject.FindProperty("clickSound");
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
+        EditorGUILayout.PropertyField(clickSoundProp);
         EditorGUILayout.PropertyField(highlightElementProp);
 
         if ((HighlightElement)highlightElementProp.enumValueIndex == HighlightElement.Image)

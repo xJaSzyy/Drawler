@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: d1af37cd29c478a4cbd8a01922937e99
+guid: a048326f2a17d1e4a9554c4ce5674887
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2638237814469517852
-    second: stroke_0
+      213: 1323041097972281396
+    second: status_icons_0
+  - first:
+      213: -4964635984695576179
+    second: status_icons_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +49,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -126,23 +129,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: stroke_0
+      name: status_icons_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4ed9a8b8fa8136bd0800000000000000
-      internalID: -2638237814469517852
+      spriteID: 43071eb6ed26c5210800000000000000
+      internalID: 1323041097972281396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: status_icons_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d89391d20e11a1bb0800000000000000
+      internalID: -4964635984695576179
       vertices: []
       indices: 
       edges: []
@@ -151,8 +176,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: cc6c3949b691a2a45a1913376faa83ff
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -161,7 +186,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      stroke_0: -2638237814469517852
+      status_icons_0: 1323041097972281396
+      status_icons_1: -4964635984695576179
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

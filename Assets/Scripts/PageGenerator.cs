@@ -17,6 +17,7 @@ public class PageGenerator : MonoBehaviour
     [SerializeField] private GameObject tabHolder;
     [SerializeField] private GameObject tabPrefab;
     [SerializeField] private SwipeController swipeController;
+    [SerializeField] private PopupController popup;
 
     private List<LevelButton> levelButtons = new();
     private List<GameObject> tabButtons = new();
@@ -48,7 +49,7 @@ public class PageGenerator : MonoBehaviour
         int index = 0;
         levelButtons.ForEach(x =>
         {
-            x.Setup(sprites[index], graySprites[index]);
+            x.Setup(sprites[index], graySprites[index], popup);
             tabNames.Add(sprites[index].name.Split('_')[0]);
             index++;
         });

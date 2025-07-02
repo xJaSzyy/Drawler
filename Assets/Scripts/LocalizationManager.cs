@@ -22,7 +22,7 @@ public class LocalizationManager : MonoBehaviour
     }
 
     private List<LocalizationElement> elements = new();
-    private LocalizationLanguage language = LocalizationLanguage.ru;
+    private LocalizationLanguage language = LocalizationLanguage.en;
 
     private void Awake()
     {

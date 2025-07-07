@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.VisualScripting.Icons;
 
 public class LanguageButton : MonoBehaviour
 {

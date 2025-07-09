@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -60,7 +61,6 @@ public class PaintManager : MonoBehaviour
         MatchingGrayTones();
         GenerateBackground();
         GenerateImage();
-        CenterCameraOnImage();
         SpawnButtons();
         FillCount();
         SelectFirstColor();
@@ -162,7 +162,7 @@ public class PaintManager : MonoBehaviour
         Rect rect = sprite.rect;
         int width = (int)rect.width;
 
-        List<GameObject> toDelete = new List<GameObject>();
+        List<GameObject> pixelsToHide = new();
 
         for (int y = 0; y < rect.height; y++)
         {
@@ -178,7 +178,7 @@ public class PaintManager : MonoBehaviour
 
                 if (newColor.a < 255)
                 {
-                    toDelete.Add(pixels[indexInPixels].gameObject);
+                    pixelsToHide.Add(pixels[indexInPixels]);
 
                     continue;
                 }
@@ -191,7 +191,6 @@ public class PaintManager : MonoBehaviour
                 int index = colorList.GetTile(newColor).id;
 
                 Color32 grayColor = colorList.GetTile(index).grayColor;
-                Vector3Int pos = new(x, y, 0);
 
                 pixels[indexInPixels].GetComponent<Image>().color = grayColor;
                 pixels[indexInPixels].transform.GetChild(0).GetComponent<TMP_Text>().text = index.ToString();
@@ -200,16 +199,12 @@ public class PaintManager : MonoBehaviour
             }
         }
 
-        foreach (var item in toDelete)
+        foreach (var item in pixelsToHide)
         {
             item.GetComponent<Image>().color = new Color(0, 0, 0, 0);
             item.transform.GetChild(0).GetComponent<TMP_Text>().color = new Color(0, 0, 0, 0);
             item.GetComponent<Pixel>().enabled = false;
         }
-
-        float maxZoom = width - width * .25f;
-        cameraController.SetBorders(0, width, maxZoom);
-        cameraController.SetZoom();
     }
 
     private void SpawnButtons()
@@ -266,13 +261,14 @@ public class PaintManager : MonoBehaviour
             }
         }
 
-        int number = colorList.GetTile(selectedColor).id;
-
         foreach (var item in pixels)
         {
-            var count = Convert.ToInt32(item.transform.GetChild(0).GetComponent<TMP_Text>().text);
+            if (item.GetComponent<Pixel>().enabled == false) { continue; }
 
-            Color32 newColor = count == number ? Color.black : colorList.GetTile(count).grayColor;
+            var count = Convert.ToInt32(item.transform.GetChild(0).GetComponent<TMP_Text>().text);
+            Color32 newColor = colorList.GetTile(selectedColor).id == count ? Color.black : colorList.GetTile(count).grayColor;
+            item.GetComponent<Image>().color = newColor;
+            item.transform.GetChild(0).GetComponent<TMP_Text>().color = IsColorDark(newColor) ? darkColor : lightColor;
 
             selectedSlider.maxValue = colorList.GetTile(selectedColor).maxCount;
             selectedSlider.gameObject.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(selectedColor) ? darkColor : lightColor;
@@ -309,7 +305,13 @@ public class PaintManager : MonoBehaviour
 
             if (colorList.GetTile(index).count <= 0)
             {
-                colorButtonsHolder.transform.GetChild(index).GetChild(2).GetComponent<Image>().sprite = completeSprite;
+                Transform target = colorButtonsHolder.transform.GetChild(index).GetChild(2);
+                Image img = target.GetComponent<Image>();
+                img.sprite = completeSprite;
+                img.transform.localScale = Vector3.one;
+
+                LeanTween.cancel(img.gameObject);
+                LeanTween.scale(colorButtonsHolder.transform.GetChild(index).gameObject, Vector3.one * .8f, 1.2f).setEasePunch();
             }
 
             historyManager.Push(pixel, selectedColor);
@@ -367,7 +369,7 @@ public class PaintManager : MonoBehaviour
         colorButtonsHolder.SetActive(false);
         plusButton.SetActive(false);
         minusButton.SetActive(false);
-        CenterCameraOnImage();
+        cameraController.ResetImage();
         StartCoroutine(TimelapseCoroutine());
     }
 
@@ -392,13 +394,6 @@ public class PaintManager : MonoBehaviour
         checkMark.transform.localScale = Vector3.zero;
         checkMark.SetActive(true);
         LeanTween.scale(checkMark, Vector3.one, 0.5f).setEase(LeanTweenType.easeOutBack);
-    }
-
-    void CenterCameraOnImage()
-    {
-        Vector2 spriteSize = sprite.rect.size;
-        mainCamera.transform.position = new Vector3(spriteSize.x / 2, spriteSize.y / 2, mainCamera.transform.position.z);
-        cameraController.SetZoom();
     }
 
     bool IsColorDark(Color32 color)

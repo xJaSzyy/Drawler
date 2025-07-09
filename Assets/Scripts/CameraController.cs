@@ -3,11 +3,10 @@ using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float zoomSpeed = 5f;
-    [SerializeField] private float maxZoom = 10f;
-    [SerializeField] private float minZoom = 2f;
-    [SerializeField] private float maxSize = 16f;
-    [SerializeField] private float minSize = 0f;
+    [SerializeField] private GameObject grid;
+    [SerializeField] private float moveSpeed = 100f;
+    [SerializeField] private float maxZoom = 4f;
+    [SerializeField] private float minZoom = 1f;
 
     private Camera mainCamera;
     private Vector3 dragOrigin;
@@ -21,7 +20,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (locked) { return; }
+        if (locked) return;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
@@ -29,9 +28,14 @@ public class CameraController : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftControl))
             {
-                float newSize = mainCamera.orthographicSize - scroll * zoomSpeed;
-                newSize = Mathf.Clamp(newSize, minZoom, maxZoom);
-                SetZoom(newSize);
+                if (scroll > 0)
+                {
+                    PlusZoom();
+                }
+                else
+                {
+                    MinusZoom();
+                }
             }
         }
 
@@ -45,13 +49,10 @@ public class CameraController : MonoBehaviour
         {
             if (Input.GetMouseButton(2))
             {
-                Vector3 difference = mainCamera.ScreenToWorldPoint(dragOrigin) - mainCamera.ScreenToWorldPoint(Input.mousePosition);
-                Vector3 newPosition = mainCamera.transform.position + difference;
+                Vector3 difference = mainCamera.ScreenToWorldPoint(Input.mousePosition) - mainCamera.ScreenToWorldPoint(dragOrigin);
+                Vector3 newPosition = grid.transform.position + difference * moveSpeed;
 
-                newPosition.x = Mathf.Clamp(newPosition.x, minSize, maxSize);
-                newPosition.y = Mathf.Clamp(newPosition.y, minSize, maxSize);
-
-                mainCamera.transform.position = newPosition;
+                grid.transform.position = newPosition;
                 dragOrigin = Input.mousePosition;
             }
             else
@@ -59,37 +60,33 @@ public class CameraController : MonoBehaviour
                 isDragging = false;
             }
         }
-
-        Vector3 clampedPosition = mainCamera.transform.position;
-        clampedPosition.x = Mathf.Clamp(clampedPosition.x, minSize, maxSize);
-        clampedPosition.y = Mathf.Clamp(clampedPosition.y, minSize, maxSize);
-        mainCamera.transform.position = clampedPosition;
     }
 
-    public void SetBorders(float minSize, float maxSize, float maxZoom)
+    public void SetZoom(float newScale = -1f)
     {
-        this.minSize = minSize;
-        this.maxSize = maxSize;
-        this.maxZoom = maxZoom;
-    }
-
-    public void SetZoom(float newSize = -1f)
-    {
-        float size = (newSize  == -1f) ? maxZoom : newSize;
-        size = Mathf.Clamp(size, minZoom, maxZoom);
-        mainCamera.orthographicSize = size;
+        float scale = (newScale == -1f) ? minZoom : newScale;
+        scale = Mathf.Clamp(scale, minZoom, maxZoom);
+        grid.transform.localScale = new Vector3(scale, scale, scale);
     }
 
     public void PlusZoom()
     {
-        float step = (maxZoom - minZoom) / 5;
-        SetZoom(mainCamera.orthographicSize - step);
+        float step = (maxZoom - minZoom) / 5f;
+        float currentScale = grid.transform.localScale.x;
+        SetZoom(currentScale + step);
     }
 
     public void MinusZoom()
     {
-        float step = (maxZoom - minZoom) / 5;
-        SetZoom(mainCamera.orthographicSize + step);
+        float step = (maxZoom - minZoom) / 5f;
+        float currentScale = grid.transform.localScale.x;
+        SetZoom(currentScale - step);
+    }
+
+    public void ResetImage()
+    {
+        SetZoom();
+        LeanTween.moveLocal(grid, Vector3.zero, 0.5f).setEase(LeanTweenType.easeOutQuad);
     }
 
     public void Lock() => locked = true;

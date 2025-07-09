@@ -51,7 +51,7 @@ public class CustomColor
     }
 
     public int id { get; }
-    public Vector3Int pos { get; set; }
+    public GameObject pixel { get; set; }
     public Color32 color { get; set; }
     public Color32 grayColor { get; set; }
     public int count { get; set; }

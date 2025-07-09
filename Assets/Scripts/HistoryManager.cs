@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class HistoryManager : MonoBehaviour
 {
-    private Queue<KeyValuePair<Vector3Int, Color32>> history = new();
+    private Queue<KeyValuePair<GameObject, Color32>> history = new();
 
-    public void Push(Vector3Int pos, Color32 color)
+    public void Push(GameObject pixel, Color32 color)
     {
-        history.Enqueue(new KeyValuePair<Vector3Int, Color32>(pos, color));
+        history.Enqueue(new KeyValuePair<GameObject, Color32>(pixel, color));
     }
 
-    public KeyValuePair<Vector3Int, Color32> Pop()
+    public KeyValuePair<GameObject, Color32> Pop()
     {
         if (history.Count == 0)
             throw new InvalidOperationException("History is empty");

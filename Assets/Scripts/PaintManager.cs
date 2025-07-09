@@ -1,23 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class PaintManager : MonoBehaviour
 {
-    [Header("Tilemap")]
-    [SerializeField] private Tilemap baseTilemap;
-    [SerializeField] private Tilemap numberTilemap;
-    [SerializeField] private Tilemap backTilemap;
-    [SerializeField] private Tilemap testTilemap;
-
     [Header("Tiles and Sprites")]
-    [SerializeField] private TileBase baseTile;
+    [SerializeField] private Tilemap backTilemap;
     [SerializeField] private TileBase backDarkTile;
     [SerializeField] private TileBase backLightTile;
     [SerializeField] private List<TileBase> numberTiles;
@@ -34,6 +27,7 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private GameObject checkMark;
     [SerializeField] private GameObject plusButton;
     [SerializeField] private GameObject minusButton;
+    [SerializeField] private List<GameObject> pixels;
 
     [Header("Other")]
     [SerializeField] private Sprite sprite;
@@ -70,65 +64,6 @@ public class PaintManager : MonoBehaviour
         SpawnButtons();
         FillCount();
         SelectFirstColor();
-    }
-
-    private void Update()
-    {
-        if (finished) { return; } 
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            DownloadPNG();
-        }
-
-        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
-        {
-            Vector3Int pos = baseTilemap.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
-
-            if (numberTilemap.GetTile(pos) != null)
-            {
-                int index = colorList.GetTile(selectedColor).id;
-                if (numberTilemap.GetTile(pos).name == $"numbers_{index}")
-                {
-                    baseTilemap.SetTile(pos, baseTile);
-                    baseTilemap.SetColor(pos, selectedColor);
-                    numberTilemap.SetTile(pos, null);
-                    backTilemap.SetTile(pos, backTile);
-
-                    PlaySound(coloringSound, volumeScale);
-                    colorList.GetTile(index).count--;
-
-                    if (colorList.GetTile(index).count <= 0)
-                    {
-                        colorButtonsHolder.transform.GetChild(index).GetChild(2).GetComponent<Image>().sprite = completeSprite;
-                    }
-
-                    historyManager.Push(pos, selectedColor);
-                }
-                else
-                {
-                    backTilemap.SetTile(pos, baseTile);
-                    backTilemap.SetColor(pos, selectedColor);
-                    numberTilemap.SetColor(pos, IsColorDark(selectedColor) ? darkColor : lightColor);
-                }
-            }
-        }
-
-        selectedSlider.value = colorList.GetTile(selectedColor).maxCount - colorList.GetTile(selectedColor).count;
-        if (selectedSlider.value == selectedSlider.maxValue)
-        {
-            selectedSlider.gameObject.SetActive(false);
-        }
-
-        if (IsTilemapEmpty(numberTilemap))
-        {
-            finished = true;
-            DataHolder.colored[DataHolder.index] = 1;
-            baseTilemap.ClearAllTiles();
-            cameraController.Lock();
-
-            StartTimelapse();
-        }
     }
 
     private void MatchingGrayTones()
@@ -171,7 +106,7 @@ public class PaintManager : MonoBehaviour
     {
         Texture2D texture = sprite.texture;
         Rect rect = sprite.rect;
-        
+
         List<bool> darks = new List<bool>();
         for (int y = 0; y < rect.height; y++)
         {
@@ -191,12 +126,12 @@ public class PaintManager : MonoBehaviour
         int darkCount = darks.Count(b => b == true);
         int lightCount = darks.Count(b => b == false);
 
-        if (darkCount >+ lightCount)
+        if (darkCount > +lightCount)
         {
             backTile = backDarkTile;
             DataHolder.theme = "dark";
         }
-        else 
+        else
         {
             backTile = backLightTile;
             DataHolder.theme = "light";
@@ -225,17 +160,28 @@ public class PaintManager : MonoBehaviour
     {
         Texture2D texture = sprite.texture;
         Rect rect = sprite.rect;
+        int width = (int)rect.width;
+
+        List<GameObject> toDelete = new List<GameObject>();
 
         for (int y = 0; y < rect.height; y++)
         {
+            int flippedY = (int)rect.height - 1 - y;
             for (int x = 0; x < rect.width; x++)
             {
                 int texX = (int)rect.x + x;
-                int texY = (int)rect.y + y;
+                int texY = (int)rect.y + flippedY;
 
                 Color32 newColor = texture.GetPixel(texX, texY);
 
-                if (newColor.a < 255) { continue; }
+                int indexInPixels = y * width + x;
+
+                if (newColor.a < 255)
+                {
+                    toDelete.Add(pixels[indexInPixels].gameObject);
+
+                    continue;
+                }
 
                 bool exist = colorList.ContainsColor(newColor);
                 if (!exist)
@@ -247,15 +193,19 @@ public class PaintManager : MonoBehaviour
                 Color32 grayColor = colorList.GetTile(index).grayColor;
                 Vector3Int pos = new(x, y, 0);
 
-                backTilemap.SetTile(pos, baseTile);
-                backTilemap.SetColor(pos, grayColor);
-
-                numberTilemap.SetTile(pos, numberTiles[index]);
-                numberTilemap.SetColor(pos, IsColorDark(grayColor) ? darkColor : lightColor);
+                pixels[indexInPixels].GetComponent<Image>().color = grayColor;
+                pixels[indexInPixels].transform.GetChild(0).GetComponent<TMP_Text>().text = index.ToString();
+                pixels[indexInPixels].transform.GetChild(0).GetComponent<TMP_Text>().color = IsColorDark(grayColor) ? darkColor : lightColor;
+                colorList.GetTile(index).pixel = pixels[indexInPixels];
             }
         }
 
-        int width = (int)rect.width;
+        foreach (var item in toDelete)
+        {
+            item.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+            item.transform.GetChild(0).GetComponent<TMP_Text>().color = new Color(0, 0, 0, 0);
+            item.GetComponent<Pixel>().enabled = false;
+        }
 
         float maxZoom = width - width * .25f;
         cameraController.SetBorders(0, width, maxZoom);
@@ -284,7 +234,7 @@ public class PaintManager : MonoBehaviour
             button.GetComponent<Button>().onClick.AddListener(() =>
             {
                 if (colorList.GetTile(colorComponent.color).count > 0)
-                { 
+                {
                     selectedColor = colorComponent.color;
                     HighlightSelectedNumber();
                 }
@@ -318,54 +268,91 @@ public class PaintManager : MonoBehaviour
 
         int number = colorList.GetTile(selectedColor).id;
 
-        BoundsInt bounds = numberTilemap.cellBounds;
-
-        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        foreach (var item in pixels)
         {
-            for (int y = bounds.yMin; y < bounds.yMax; y++)
-            {
-                Vector3Int pos = new Vector3Int(x, y, 0);
-                TileBase tile = numberTilemap.GetTile(pos);
+            var count = Convert.ToInt32(item.transform.GetChild(0).GetComponent<TMP_Text>().text);
 
-                if (tile != null)
-                {
-                    string[] parts = tile.name.Split('_');
+            Color32 newColor = count == number ? Color.black : colorList.GetTile(count).grayColor;
 
-                    if (int.TryParse(parts[1], out int tileNumber))
-                    {
-                        Color32 newColor = tileNumber == number ? Color.black : colorList.GetTile(tileNumber).grayColor;
-                        backTilemap.SetColor(pos, newColor);
-                        numberTilemap.SetColor(pos, IsColorDark(newColor) ? darkColor : lightColor);
-
-                        selectedSlider.maxValue = colorList.GetTile(selectedColor).maxCount;
-                        selectedSlider.gameObject.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(selectedColor) ? darkColor : lightColor;
-                        selectedSlider.gameObject.transform.GetChild(1).GetComponentInChildren<Image>().color = selectedColor;
-                    }    
-                }
-            }
+            selectedSlider.maxValue = colorList.GetTile(selectedColor).maxCount;
+            selectedSlider.gameObject.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(selectedColor) ? darkColor : lightColor;
+            selectedSlider.gameObject.transform.GetChild(1).GetComponentInChildren<Image>().color = selectedColor;
         }
     }
 
     private void FillCount()
     {
-        BoundsInt bounds = numberTilemap.cellBounds;
-
-        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        foreach (var item in pixels)
         {
-            for (int y = bounds.yMin; y < bounds.yMax; y++)
-            {
-                Vector3Int tilePos = new Vector3Int(x, y, 0);
-                TileBase tile = numberTilemap.GetTile(tilePos);
-                if (tile != null)
-                {
-                    string[] parts = tile.name.Split('_');
+            if (item.GetComponent<Image>().color == new Color(0, 0, 0, 0)) { continue; }
 
-                    if (int.TryParse(parts[1], out int tileNumber))
-                    {
-                        colorList.GetTile(tileNumber).AddCount();
-                    }
-                }
+            int count = Convert.ToInt32(item.transform.GetChild(0).GetComponent<TMP_Text>().text);
+            colorList.GetTile(count).AddCount();
+        }
+    }
+
+    public void Paint(GameObject pixel)
+    {
+        int index = colorList.GetTile(selectedColor).id;
+
+        var image = pixel.GetComponent<Image>();
+        var countText = pixel.transform.GetChild(0).GetComponent<TMP_Text>();
+
+        if (Convert.ToInt32(countText.text) == index)
+        {
+            image.color = selectedColor;
+            countText.enabled = false;
+
+            PlaySound(coloringSound, volumeScale);
+            colorList.GetTile(index).count--;
+            pixel.GetComponent<Pixel>().enabled = false;
+
+            if (colorList.GetTile(index).count <= 0)
+            {
+                colorButtonsHolder.transform.GetChild(index).GetChild(2).GetComponent<Image>().sprite = completeSprite;
             }
+
+            historyManager.Push(pixel, selectedColor);
+        }
+        else
+        {
+            image.color = selectedColor;
+            countText.color = IsColorDark(selectedColor) ? darkColor : lightColor;
+        }
+
+        selectedSlider.value = colorList.GetTile(selectedColor).maxCount - colorList.GetTile(selectedColor).count;
+        if (selectedSlider.value == selectedSlider.maxValue)
+        {
+            selectedSlider.gameObject.SetActive(false);
+        }
+
+        FinishCheck();
+    }
+
+    private void FinishCheck()
+    {
+        bool isFinished = true;
+        for (int i = 0; i < colorList.Count; i++)
+        {
+            if (colorList.GetTile(i).count > 0)
+            {
+                isFinished = false;
+            }
+        }
+
+        if (isFinished)
+        {
+            finished = true;
+            DataHolder.colored[DataHolder.index] = 1;
+            cameraController.Lock();
+
+            pixels.ForEach(pixel =>
+            {
+                pixel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+                pixel.transform.GetChild(0).GetComponent<TMP_Text>().color = new Color(0, 0, 0, 0);
+            });
+
+            StartTimelapse();
         }
     }
 
@@ -398,8 +385,7 @@ public class PaintManager : MonoBehaviour
             yield return new WaitForSeconds(interval);
 
             var kvp = historyManager.Pop();
-            baseTilemap.SetTile(kvp.Key, baseTile);
-            baseTilemap.SetColor(kvp.Key, kvp.Value);
+            kvp.Key.GetComponent<Image>().color = kvp.Value;
         }
 
         PlaySound(finishSound, volumeScale);
@@ -425,13 +411,6 @@ public class PaintManager : MonoBehaviour
         return false;
     }
 
-    bool IsTilemapEmpty(Tilemap tilemap)
-    {
-        tilemap.CompressBounds();
-        TileBase[] tiles = tilemap.GetTilesBlock(tilemap.cellBounds);
-        return tiles.All(t => t == null);
-    }
-
     void PlaySound(AudioClip clip, float volume)
     {
         if (Time.time - lastPlayTime > audioInterval)
@@ -439,40 +418,5 @@ public class PaintManager : MonoBehaviour
             audioSource.PlayOneShot(clip, volume);
             lastPlayTime = Time.time;
         }
-    }
-
-    private void DownloadPNG()
-    {
-        BoundsInt bounds = testTilemap.cellBounds;
-        int width = bounds.size.x;
-        int height = bounds.size.y;
-
-        Texture2D texture = new(width, height, TextureFormat.RGBA32, false);
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                Vector3Int tilePos = new Vector3Int(bounds.x + x, bounds.y + y, 0);
-                TileBase tile = testTilemap.GetTile(tilePos);
-
-                if (tile == null || tile == backTile)
-                {
-                    texture.SetPixel(x, y, new Color(0, 0, 0, 0));
-                    continue;
-                }
-
-                Color color = testTilemap.GetColor(tilePos);
-                texture.SetPixel(x, y, color);
-            }
-        }
-
-        texture.Apply();
-
-        byte[] bytes = texture.EncodeToPNG();
-        string path = Path.Combine(Application.dataPath+"/Images", $"{sprite.name}_gray.png");
-        File.WriteAllBytes(path, bytes);
-
-        Debug.Log($"Saved: {path}");
     }
 }

@@ -7,6 +7,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using UnityEngine.WSA;
+using static UnityEditor.Progress;
 
 public class PaintManager : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class PaintManager : MonoBehaviour
     [SerializeField] private Tilemap backTilemap;
     [SerializeField] private TileBase backDarkTile;
     [SerializeField] private TileBase backLightTile;
-    [SerializeField] private List<TileBase> numberTiles;
+    [SerializeField] private List<Sprite> numberSprites;
     [SerializeField] private Sprite completeSprite;
 
     [Header("References")]
@@ -126,7 +128,7 @@ public class PaintManager : MonoBehaviour
         int darkCount = darks.Count(b => b == true);
         int lightCount = darks.Count(b => b == false);
 
-        if (darkCount > +lightCount)
+        if (darkCount > lightCount)
         {
             backTile = backDarkTile;
             DataHolder.theme = "dark";
@@ -193,8 +195,8 @@ public class PaintManager : MonoBehaviour
                 Color32 grayColor = colorList.GetTile(index).grayColor;
 
                 pixels[indexInPixels].GetComponent<Image>().color = grayColor;
-                pixels[indexInPixels].transform.GetChild(0).GetComponent<TMP_Text>().text = index.ToString();
-                pixels[indexInPixels].transform.GetChild(0).GetComponent<TMP_Text>().color = IsColorDark(grayColor) ? darkColor : lightColor;
+                pixels[indexInPixels].transform.GetChild(0).GetComponent<Image>().sprite = numberSprites[index];
+                pixels[indexInPixels].transform.GetChild(0).GetComponent<Image>().color = IsColorDark(grayColor) ? darkColor : lightColor;
                 colorList.GetTile(index).pixel = pixels[indexInPixels];
             }
         }
@@ -202,7 +204,7 @@ public class PaintManager : MonoBehaviour
         foreach (var item in pixelsToHide)
         {
             item.GetComponent<Image>().color = new Color(0, 0, 0, 0);
-            item.transform.GetChild(0).GetComponent<TMP_Text>().color = new Color(0, 0, 0, 0);
+            item.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
             item.GetComponent<Pixel>().enabled = false;
         }
     }
@@ -218,12 +220,8 @@ public class PaintManager : MonoBehaviour
             Image colorComponent = button.transform.GetChild(0).GetComponent<Image>();
             colorComponent.color = colorList.GetTile(i).color;
             Image countComponent = button.transform.GetChild(2).GetComponent<Image>();
-            TileBase foundTile = numberTiles.Find(x => x.name.Contains(i.ToString()));
 
-            if (foundTile is Tile tile)
-            {
-                countComponent.sprite = tile.sprite;
-            }
+            countComponent.sprite = numberSprites.Find(x => x.name.Contains(i.ToString()));
             countComponent.color = IsColorDark(colorList.GetTile(i).color) ? darkColor : lightColor;
 
             button.GetComponent<Button>().onClick.AddListener(() =>
@@ -265,14 +263,17 @@ public class PaintManager : MonoBehaviour
         {
             if (item.GetComponent<Pixel>().enabled == false) { continue; }
 
-            var count = Convert.ToInt32(item.transform.GetChild(0).GetComponent<TMP_Text>().text);
-            Color32 newColor = colorList.GetTile(selectedColor).id == count ? Color.black : colorList.GetTile(count).grayColor;
-            item.GetComponent<Image>().color = newColor;
-            item.transform.GetChild(0).GetComponent<TMP_Text>().color = IsColorDark(newColor) ? darkColor : lightColor;
+            var number = GetNumber(item.transform.GetChild(0).GetComponent<Image>().sprite.name);
+            if (number != -1)
+            {
+                Color32 newColor = colorList.GetTile(selectedColor).id == number ? Color.black : colorList.GetTile(number).grayColor;
+                item.GetComponent<Image>().color = newColor;
+                item.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(newColor) ? darkColor : lightColor;
 
-            selectedSlider.maxValue = colorList.GetTile(selectedColor).maxCount;
-            selectedSlider.gameObject.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(selectedColor) ? darkColor : lightColor;
-            selectedSlider.gameObject.transform.GetChild(1).GetComponentInChildren<Image>().color = selectedColor;
+                selectedSlider.maxValue = colorList.GetTile(selectedColor).maxCount;
+                selectedSlider.gameObject.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(selectedColor) ? darkColor : lightColor;
+                selectedSlider.gameObject.transform.GetChild(1).GetComponentInChildren<Image>().color = selectedColor;
+            }
         }
     }
 
@@ -282,8 +283,11 @@ public class PaintManager : MonoBehaviour
         {
             if (item.GetComponent<Image>().color == new Color(0, 0, 0, 0)) { continue; }
 
-            int count = Convert.ToInt32(item.transform.GetChild(0).GetComponent<TMP_Text>().text);
-            colorList.GetTile(count).AddCount();
+            var number = GetNumber(item.transform.GetChild(0).GetComponent<Image>().sprite.name);
+            if (number != -1)
+            {
+                colorList.GetTile(number).AddCount();
+            }
         }
     }
 
@@ -292,12 +296,13 @@ public class PaintManager : MonoBehaviour
         int index = colorList.GetTile(selectedColor).id;
 
         var image = pixel.GetComponent<Image>();
-        var countText = pixel.transform.GetChild(0).GetComponent<TMP_Text>();
+        var countImage = pixel.transform.GetChild(0).GetComponent<Image>();
+        var number = GetNumber(countImage.sprite.name);
 
-        if (Convert.ToInt32(countText.text) == index)
+        if (number == index)
         {
             image.color = selectedColor;
-            countText.enabled = false;
+            countImage.enabled = false;
 
             PlaySound(coloringSound, volumeScale);
             colorList.GetTile(index).count--;
@@ -319,7 +324,7 @@ public class PaintManager : MonoBehaviour
         else
         {
             image.color = selectedColor;
-            countText.color = IsColorDark(selectedColor) ? darkColor : lightColor;
+            countImage.color = IsColorDark(selectedColor) ? darkColor : lightColor;
         }
 
         selectedSlider.value = colorList.GetTile(selectedColor).maxCount - colorList.GetTile(selectedColor).count;
@@ -329,6 +334,18 @@ public class PaintManager : MonoBehaviour
         }
 
         FinishCheck();
+    }
+
+    private int GetNumber(string name)
+    {
+        string[] parts = name.Split('_');
+
+        if (int.TryParse(parts[1], out int number))
+        {
+            return number;
+        }
+
+        return -1;
     }
 
     private void FinishCheck()
@@ -351,7 +368,7 @@ public class PaintManager : MonoBehaviour
             pixels.ForEach(pixel =>
             {
                 pixel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
-                pixel.transform.GetChild(0).GetComponent<TMP_Text>().color = new Color(0, 0, 0, 0);
+                pixel.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
             });
 
             StartTimelapse();

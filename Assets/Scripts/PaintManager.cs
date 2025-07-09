@@ -1,14 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using UnityEngine.WSA;
-using static UnityEditor.Progress;
 
 public class PaintManager : MonoBehaviour
 {
@@ -34,6 +29,7 @@ public class PaintManager : MonoBehaviour
 
     [Header("Other")]
     [SerializeField] private Sprite sprite;
+    [SerializeField] private Color32 selectColor = Color.black;
     [SerializeField] private float volumeScale;
     [SerializeField] private float audioInterval = 0.04f;
 
@@ -266,7 +262,7 @@ public class PaintManager : MonoBehaviour
             var number = GetNumber(item.transform.GetChild(0).GetComponent<Image>().sprite.name);
             if (number != -1)
             {
-                Color32 newColor = colorList.GetTile(selectedColor).id == number ? Color.black : colorList.GetTile(number).grayColor;
+                Color32 newColor = colorList.GetTile(selectedColor).id == number ? selectColor : colorList.GetTile(number).grayColor;
                 item.GetComponent<Image>().color = newColor;
                 item.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(newColor) ? darkColor : lightColor;
 

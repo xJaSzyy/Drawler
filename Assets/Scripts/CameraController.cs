@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private GameObject grid;
-    [SerializeField] private float moveSpeed = 100f;
-    [SerializeField] private float maxZoom = 4f;
-    [SerializeField] private float minZoom = 1f;
+    [SerializeField] private float maxZoom = 10f;
+    [SerializeField] private float minZoom = 2f;
+    [SerializeField] private float maxSize = 16f;
+    [SerializeField] private float minSize = 0f;
 
     private Camera mainCamera;
     private Vector3 dragOrigin;
@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (locked) return;
+        if (locked) { return; }
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
@@ -49,10 +49,13 @@ public class CameraController : MonoBehaviour
         {
             if (Input.GetMouseButton(2))
             {
-                Vector3 difference = mainCamera.ScreenToWorldPoint(Input.mousePosition) - mainCamera.ScreenToWorldPoint(dragOrigin);
-                Vector3 newPosition = grid.transform.position + difference * moveSpeed;
+                Vector3 difference = mainCamera.ScreenToWorldPoint(dragOrigin) - mainCamera.ScreenToWorldPoint(Input.mousePosition);
+                Vector3 newPosition = mainCamera.transform.position + difference;
 
-                grid.transform.position = newPosition;
+                newPosition.x = Mathf.Clamp(newPosition.x, minSize, maxSize);
+                newPosition.y = Mathf.Clamp(newPosition.y, minSize, maxSize);
+
+                mainCamera.transform.position = newPosition;
                 dragOrigin = Input.mousePosition;
             }
             else
@@ -60,33 +63,30 @@ public class CameraController : MonoBehaviour
                 isDragging = false;
             }
         }
+
+        Vector3 clampedPosition = mainCamera.transform.position;
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, minSize, maxSize);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, minSize, maxSize);
+        mainCamera.transform.position = clampedPosition;
     }
 
-    public void SetZoom(float newScale = -1f)
+    public void SetZoom(float newSize = -1f)
     {
-        float scale = (newScale == -1f) ? minZoom : newScale;
-        scale = Mathf.Clamp(scale, minZoom, maxZoom);
-        grid.transform.localScale = new Vector3(scale, scale, scale);
+        float size = (newSize == -1f) ? maxZoom : newSize;
+        size = Mathf.Clamp(size, minZoom, maxZoom);
+        mainCamera.orthographicSize = size;
     }
 
     public void PlusZoom()
     {
-        float step = (maxZoom - minZoom) / 5f;
-        float currentScale = grid.transform.localScale.x;
-        SetZoom(currentScale + step);
+        float step = (maxZoom - minZoom) / 5;
+        SetZoom(mainCamera.orthographicSize - step);
     }
 
     public void MinusZoom()
     {
-        float step = (maxZoom - minZoom) / 5f;
-        float currentScale = grid.transform.localScale.x;
-        SetZoom(currentScale - step);
-    }
-
-    public void ResetImage()
-    {
-        SetZoom();
-        LeanTween.moveLocal(grid, Vector3.zero, 0.5f).setEase(LeanTweenType.easeOutQuad);
+        float step = (maxZoom - minZoom) / 5;
+        SetZoom(mainCamera.orthographicSize + step);
     }
 
     public void Lock() => locked = true;

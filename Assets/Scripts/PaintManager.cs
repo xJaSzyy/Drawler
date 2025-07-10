@@ -62,6 +62,7 @@ public class PaintManager : MonoBehaviour
         SpawnButtons();
         FillCount();
         SelectFirstColor();
+        CenterCameraOnImage();
     }
 
     private void MatchingGrayTones()
@@ -164,11 +165,10 @@ public class PaintManager : MonoBehaviour
 
         for (int y = 0; y < rect.height; y++)
         {
-            int flippedY = (int)rect.height - 1 - y;
             for (int x = 0; x < rect.width; x++)
             {
                 int texX = (int)rect.x + x;
-                int texY = (int)rect.y + flippedY;
+                int texY = (int)rect.y + y;
 
                 Color32 newColor = texture.GetPixel(texX, texY);
 
@@ -190,17 +190,17 @@ public class PaintManager : MonoBehaviour
 
                 Color32 grayColor = colorList.GetTile(index).grayColor;
 
-                pixels[indexInPixels].GetComponent<Image>().color = grayColor;
-                pixels[indexInPixels].transform.GetChild(0).GetComponent<Image>().sprite = numberSprites[index];
-                pixels[indexInPixels].transform.GetChild(0).GetComponent<Image>().color = IsColorDark(grayColor) ? darkColor : lightColor;
+                pixels[indexInPixels].GetComponent<SpriteRenderer>().color = grayColor;
+                pixels[indexInPixels].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = numberSprites[index];
+                pixels[indexInPixels].transform.GetChild(0).GetComponent<SpriteRenderer>().color = IsColorDark(grayColor) ? darkColor : lightColor;
                 colorList.GetTile(index).pixel = pixels[indexInPixels];
             }
         }
 
         foreach (var item in pixelsToHide)
         {
-            item.GetComponent<Image>().color = new Color(0, 0, 0, 0);
-            item.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
+            item.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+            item.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
             item.GetComponent<Pixel>().enabled = false;
         }
     }
@@ -259,12 +259,12 @@ public class PaintManager : MonoBehaviour
         {
             if (item.GetComponent<Pixel>().enabled == false) { continue; }
 
-            var number = GetNumber(item.transform.GetChild(0).GetComponent<Image>().sprite.name);
+            var number = GetNumber(item.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite.name);
             if (number != -1)
             {
                 Color32 newColor = colorList.GetTile(selectedColor).id == number ? selectColor : colorList.GetTile(number).grayColor;
-                item.GetComponent<Image>().color = newColor;
-                item.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(newColor) ? darkColor : lightColor;
+                item.GetComponent<SpriteRenderer>().color = newColor;
+                item.transform.GetChild(0).GetComponent<SpriteRenderer>().color = IsColorDark(newColor) ? darkColor : lightColor;
 
                 selectedSlider.maxValue = colorList.GetTile(selectedColor).maxCount;
                 selectedSlider.gameObject.transform.GetChild(0).GetComponent<Image>().color = IsColorDark(selectedColor) ? darkColor : lightColor;
@@ -277,9 +277,9 @@ public class PaintManager : MonoBehaviour
     {
         foreach (var item in pixels)
         {
-            if (item.GetComponent<Image>().color == new Color(0, 0, 0, 0)) { continue; }
+            if (item.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0)) { continue; }
 
-            var number = GetNumber(item.transform.GetChild(0).GetComponent<Image>().sprite.name);
+            var number = GetNumber(item.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite.name);
             if (number != -1)
             {
                 colorList.GetTile(number).AddCount();
@@ -291,8 +291,8 @@ public class PaintManager : MonoBehaviour
     {
         int index = colorList.GetTile(selectedColor).id;
 
-        var image = pixel.GetComponent<Image>();
-        var countImage = pixel.transform.GetChild(0).GetComponent<Image>();
+        var image = pixel.GetComponent<SpriteRenderer>();
+        var countImage = pixel.transform.GetChild(0).GetComponent<SpriteRenderer>();
         var number = GetNumber(countImage.sprite.name);
 
         if (number == index)
@@ -363,8 +363,8 @@ public class PaintManager : MonoBehaviour
 
             pixels.ForEach(pixel =>
             {
-                pixel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
-                pixel.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
+                pixel.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+                pixel.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
             });
 
             StartTimelapse();
@@ -382,7 +382,8 @@ public class PaintManager : MonoBehaviour
         colorButtonsHolder.SetActive(false);
         plusButton.SetActive(false);
         minusButton.SetActive(false);
-        cameraController.ResetImage();
+        cameraController.SetZoom();
+        CenterCameraOnImage();
         StartCoroutine(TimelapseCoroutine());
     }
 
@@ -400,7 +401,7 @@ public class PaintManager : MonoBehaviour
             yield return new WaitForSeconds(interval);
 
             var kvp = historyManager.Pop();
-            kvp.Key.GetComponent<Image>().color = kvp.Value;
+            kvp.Key.GetComponent<SpriteRenderer>().color = kvp.Value;
         }
 
         PlaySound(finishSound, volumeScale);
@@ -426,5 +427,13 @@ public class PaintManager : MonoBehaviour
             audioSource.PlayOneShot(clip, volume);
             lastPlayTime = Time.time;
         }
+    }
+
+    void CenterCameraOnImage()
+    {
+        Vector2 spriteSize = sprite.rect.size;
+        mainCamera.transform.position = new Vector3(spriteSize.x / 4 - .25f, spriteSize.y / 4 - .25f, mainCamera.transform.position.z);
+        mainCamera.transform.position = new Vector3(spriteSize.x / 4 - .25f, spriteSize.y / 4 - .25f, mainCamera.transform.position.z);
+        cameraController.SetZoom();
     }
 }
